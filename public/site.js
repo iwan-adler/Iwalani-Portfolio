@@ -342,6 +342,35 @@
   if (!twin || !chat) return;
   const EMAIL = 'rosiwa648@gmail.com';
 
+  /* ---- little life: blinks, waves, expressions, emotes ---- */
+  const emotes = $('#twin-emotes');
+  const flash = (cls, ms) => { twin.classList.remove(cls); void twin.offsetWidth; twin.classList.add(cls); clearTimeout(flash[cls]); flash[cls] = setTimeout(() => twin.classList.remove(cls), ms); };
+  const emote = ch => {
+    if (reduce || !emotes) return;
+    const e = document.createElement('span'); e.className = 'emote'; e.textContent = ch;
+    e.style.setProperty('--dx', (Math.random() * 30 - 15).toFixed(0) + 'px');
+    emotes.append(e); setTimeout(() => e.remove(), 1900);
+  };
+  const blink = () => { flash('blink', 200); if (Math.random() < .25) setTimeout(() => flash('blink', 200), 260); };
+  const wave = () => flash('wave', 1750);
+  const happy = ms => flash('happy', ms || 1400);
+  const talk = ms => flash('talking', ms);
+  if (!reduce) {
+    (function blinkLoop() { blink(); setTimeout(blinkLoop, 2400 + Math.random() * 3600); })();
+    setTimeout(wave, 1600);
+    (function idle() {
+      const r = Math.random();
+      if (r < .3) wave();
+      else if (r < .55) { happy(1300); emote(['✨', '💙', '💫'][Math.floor(Math.random() * 3)]); }
+      else if (r < .75) { flash('tilt', 2200); emote('🎵'); }
+      else if (r < .9) { flash('tilt', 1800); emote('💭'); }
+      else { talk(900); emote('👋'); wave(); }
+      setTimeout(idle, 7000 + Math.random() * 6000);
+    })();
+    btn.addEventListener('pointerenter', () => { happy(1600); emote('💙'); if (!twin.classList.contains('wave')) wave(); });
+  }
+  window.twinFx = { emote, happy, talk, wave };
+
   /* speech bubble cycles through lines */
   const lines = ["Hey! ✨ I'm Iwalani's AI twin.<br>Click me to chat!", "Ask me about SRM Orbit 🚀", "Curious what I build with? Ask me!", "Psst… I know all her projects 👀"];
   let li = 0;
@@ -406,6 +435,7 @@
     q = q.trim(); if (!q || busy) return;
     busy = true; add('me', q); history.push({ role: 'user', text: q });
     const t = typing(); const started = Date.now();
+    emote('💭'); twin.classList.add('tilt');
     let answer = null;
     try {
       const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 15000);
@@ -415,7 +445,7 @@
     } catch (e) {}
     if (!answer) answer = localAnswer(q);
     const wait = Math.max(0, 650 - (Date.now() - started));
-    setTimeout(() => { t.remove(); add('bot', answer); history.push({ role: 'model', text: answer }); busy = false; }, wait);
+    setTimeout(() => { t.remove(); twin.classList.remove('tilt'); talk(Math.min(3200, 600 + answer.length * 18)); add('bot', answer); history.push({ role: 'model', text: answer }); busy = false; }, wait);
   }
 
   const chips = ['What have you built?', 'Tell me about SRM Orbit', 'What is CardioAI?', 'Tell me about mini-redis', 'What are your skills?', 'How do I contact you?'];
@@ -434,7 +464,7 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
   window.openTwin = openTwin;
-  btn.addEventListener('click', () => { if (!reduce) { twin.classList.remove('hop'); void twin.offsetWidth; twin.classList.add('hop'); } setTimeout(openTwin, reduce ? 0 : 280); });
+  btn.addEventListener('click', () => { emote('✨'); if (!reduce) { twin.classList.remove('hop'); void twin.offsetWidth; twin.classList.add('hop'); } setTimeout(openTwin, reduce ? 0 : 280); });
   fab.addEventListener('click', openTwin);
   $('#chat-close').addEventListener('click', closeTwin);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !chat.hidden) closeTwin(); });

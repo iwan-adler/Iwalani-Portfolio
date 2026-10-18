@@ -281,9 +281,9 @@ footer .socials{margin:0}
 .twin-body{position:absolute;inset:auto 0 0 0;height:100%;width:100%;padding:0;border:0;background:none;cursor:pointer;pointer-events:auto;display:block;border-radius:40% 40% 20% 20%}
 .twin-body:focus-visible{outline:2px solid var(--sky);outline-offset:6px}
 .twin-lean{position:absolute;inset:0 0 6% 0;display:block;transform-origin:50% 100%;transform:rotate(var(--lean,0deg));transition:transform .6s cubic-bezier(.2,.8,.2,1)}
-.twin-lean img{display:block;height:100%;width:auto;margin-inline:auto;max-width:none;transform-origin:50% 100%;animation:twinFloat 5.5s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(77,125,255,.45)) drop-shadow(0 18px 30px rgba(5,11,30,.6));user-select:none;-webkit-user-drag:none}
+.twin-lean .rig{display:block;height:100%;width:auto;aspect-ratio:272/690;margin-inline:auto;max-width:none;overflow:visible;transform-origin:50% 100%;animation:twinFloat 5.5s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(77,125,255,.45)) drop-shadow(0 18px 30px rgba(5,11,30,.6));user-select:none;-webkit-user-drag:none}
 @keyframes twinFloat{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-12px) scaleY(1.008)}}
-.twin-body:hover .twin-lean img{filter:drop-shadow(0 0 24px rgba(121,184,255,.75)) drop-shadow(0 18px 30px rgba(5,11,30,.6))}
+.twin-body:hover .twin-lean .rig{filter:drop-shadow(0 0 24px rgba(121,184,255,.75)) drop-shadow(0 18px 30px rgba(5,11,30,.6))}
 .twin.hop .twin-lean{animation:hop .6s cubic-bezier(.3,1.6,.5,1)}
 @keyframes hop{30%{transform:translateY(-22px) rotate(-3deg)}60%{transform:translateY(0) rotate(2deg)}}
 .twin-pad{position:absolute;left:50%;bottom:1%;width:92%;height:9%;translate:-50% 0;pointer-events:none}
@@ -367,6 +367,36 @@ footer .socials{margin:0}
 @keyframes miniIn{from{transform:translateY(14px) scale(.98);opacity:0}}
 @media (max-width:1000px){.mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:620px){.mini-grid{grid-template-columns:1fr}}
+
+
+/* ===== AI TWIN RIG: breathing, blinking, waving, expressions ===== */
+.rig *{transform-box:view-box}
+.rig-upper{transform-origin:132px 262px;animation:sway 7s ease-in-out infinite}
+.rig-breathe{transform-origin:132px 262px;animation:breathe 4.2s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-.9deg)}50%{transform:rotate(.9deg)}}
+@keyframes breathe{0%,100%{transform:scaleY(1) translateY(0)}45%{transform:scaleY(1.014) translateY(-.4px)}}
+.rig-face{transform-origin:128px 110px;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.twin.tilt .rig-face{transform:rotate(-2deg) translateY(-1px)}
+.rig-arm{transform-origin:212px 206px;animation:armIdle 5.5s ease-in-out infinite}
+@keyframes armIdle{0%,100%{transform:rotate(0)}50%{transform:rotate(-2.5deg)}}
+.twin.wave .rig-arm{animation:wave 1.7s ease-in-out}
+@keyframes wave{0%,100%{transform:rotate(0)}14%{transform:rotate(-8deg)}30%{transform:rotate(7deg)}46%{transform:rotate(-8deg)}62%{transform:rotate(7deg)}80%{transform:rotate(-3deg)}}
+.lid{transform-box:fill-box;transform-origin:50% 0%;transform:scaleY(0)}
+.lid path{fill:none;stroke:#2A1414;stroke-width:1.6;stroke-linecap:round}
+.lash-happy{opacity:0}
+.twin.blink .lid{animation:blink .19s ease-in-out}
+@keyframes blink{50%{transform:scaleY(1)}}
+.twin.happy .lid{transform:scaleY(1);transition:transform .15s}
+.twin.happy .lash-closed{opacity:0}
+.twin.happy .lash-happy{opacity:1}
+.blush{fill:#FF6F91;opacity:0;filter:blur(1.6px);transition:opacity .4s}
+.twin.happy .blush,.twin.shy .blush{opacity:.4}
+.mouth{fill:#7A2E33;transform-box:fill-box;transform-origin:50% 50%;transform:scale(.2);opacity:0;transition:opacity .15s}
+.twin.talking .mouth{opacity:1;animation:talk .22s ease-in-out infinite alternate}
+@keyframes talk{from{transform:scale(.35,.25)}to{transform:scale(1,1)}}
+.emotes{position:absolute;left:58%;top:4%;width:0;height:0;pointer-events:none}
+.emote{position:absolute;left:0;top:0;font-size:22px;line-height:1;filter:drop-shadow(0 0 8px rgba(121,184,255,.7));animation:emote 1.8s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes emote{0%{transform:translate(-50%,10px) scale(.4);opacity:0}20%{transform:translate(-50%,-6px) scale(1.15);opacity:1}70%{opacity:1}100%{transform:translate(calc(-50% + var(--dx,0px)),-46px) scale(.9);opacity:0}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}

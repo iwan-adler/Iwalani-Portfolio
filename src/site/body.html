@@ -89,7 +89,24 @@
         <div class="twin-bubble" id="twin-bubble" aria-hidden="true"><span id="twin-say">Hey! ✨ I'm Iwalani's AI twin.<br>Click me to chat!</span></div>
         <button class="twin-body" id="twin-btn" type="button" aria-label="Chat with Iwalani's AI twin">
           <span class="twin-pad" aria-hidden="true"><i></i><i></i></span>
-          <span class="twin-lean"><img src="/twin.webp" alt="Illustrated character of Iwalani waving" width="272" height="690" draggable="false"></span>
+          <span class="twin-lean">
+            <svg class="rig" viewBox="0 0 272 690" role="img" aria-label="Illustrated character of Iwalani waving">
+              <defs><linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B86A49"/><stop offset=".55" stop-color="#CC7C57"/><stop offset="1" stop-color="#D08560"/></linearGradient></defs>
+              <image href="/twin-lower.webp" width="272" height="690"/>
+              <g class="rig-upper">
+                <g class="rig-breathe">
+                  <image href="/twin-upper.webp" width="272" height="690"/>
+                  <g class="rig-face">
+                    <ellipse class="blush" cx="99" cy="93" rx="8" ry="4"/><ellipse class="blush" cx="153" cy="80" rx="8" ry="4"/>
+                    <g transform="translate(107.5 80) rotate(-20)"><g class="lid"><ellipse rx="10.5" ry="8.5" cy="0" fill="url(#skin)"/><path class="lash-closed" d="M-10.5 1.5Q0 8 10.5 1.5" /><path class="lash-happy" d="M-9 5Q0 -5 9 5" /></g></g><g transform="translate(140.5 68) rotate(-20)"><g class="lid"><ellipse rx="10.5" ry="8.5" cy="0" fill="url(#skin)"/><path class="lash-closed" d="M-10.5 1.5Q0 8 10.5 1.5" /><path class="lash-happy" d="M-9 5Q0 -5 9 5" /></g></g>
+                    <ellipse class="mouth" cx="130" cy="95.5" rx="3.8" ry="2.3" transform="rotate(-20 130 95.5)"/>
+                  </g>
+                  <g class="rig-arm"><image href="/twin-arm.webp" width="272" height="690"/></g>
+                </g>
+              </g>
+            </svg>
+          </span>
+          <span class="emotes" id="twin-emotes" aria-hidden="true"></span>
           <span class="spark s1" aria-hidden="true"></span><span class="spark s2" aria-hidden="true"></span><span class="spark s3" aria-hidden="true"></span><span class="spark s4" aria-hidden="true"></span><span class="spark s5" aria-hidden="true"></span>
         </button>
       </div>
