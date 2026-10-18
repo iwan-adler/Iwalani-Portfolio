@@ -79,10 +79,20 @@
         <a class="icon-link" href="#contact" aria-label="Email address"><svg><use href="#i-mail"/></svg></a>
       </div>
     </div>
-    <div class="orbit-wrap rise d3" id="orbit-wrap" aria-hidden="true">
-      <canvas id="orbit"></canvas>
-      <span class="orbit-hint mono"><b>drag</b> to spin · <b>tap</b> a planet</span>
-      <span class="orbit-caption mono">fig. 01 — what I orbit around</span>
+    <div class="hero-art rise d3">
+      <div class="orbit-wrap" id="orbit-wrap" aria-hidden="true">
+        <canvas id="orbit"></canvas>
+        <span class="orbit-hint mono"><b>drag</b> to spin · <b>tap</b> a planet</span>
+        <span class="orbit-caption mono">fig. 01 — what I orbit around</span>
+      </div>
+      <div class="twin" id="twin">
+        <div class="twin-bubble" id="twin-bubble" aria-hidden="true"><span id="twin-say">Hey! ✨ I'm Iwalani's AI twin.<br>Click me to chat!</span></div>
+        <button class="twin-body" id="twin-btn" type="button" aria-label="Chat with Iwalani's AI twin">
+          <span class="twin-pad" aria-hidden="true"><i></i><i></i></span>
+          <span class="twin-lean"><img src="/twin.webp" alt="Illustrated character of Iwalani waving" width="272" height="690" draggable="false"></span>
+          <span class="spark s1" aria-hidden="true"></span><span class="spark s2" aria-hidden="true"></span><span class="spark s3" aria-hidden="true"></span><span class="spark s4" aria-hidden="true"></span><span class="spark s5" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </div>
 </header>
@@ -277,6 +287,22 @@
   </div>
 </section>
 
+
+<button class="twin-fab" id="twin-fab" type="button" hidden><img src="/twin-face.webp" alt="" width="88" height="88"><span>Ask my AI twin</span></button>
+
+<aside class="chat" id="chat" role="dialog" aria-label="Chat with Iwalani's AI twin" hidden>
+  <header class="chat-head">
+    <img src="/twin-face.webp" alt="" width="88" height="88">
+    <div><b>Iwalani's AI twin</b><span class="mono"><i class="dot"></i>online · answers from my portfolio</span></div>
+    <button type="button" id="chat-close" aria-label="Close chat"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </header>
+  <div class="chat-log" id="chat-log" aria-live="polite"></div>
+  <div class="chat-sugg" id="chat-sugg"></div>
+  <form class="chat-in" id="chat-form">
+    <input id="chat-input" maxlength="400" autocomplete="off" placeholder="Ask me anything about Iwalani…" aria-label="Your message">
+    <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+  </form>
+</aside>
 
 <div class="term-back" id="term" hidden>
   <div class="term" role="dialog" aria-modal="true" aria-label="Terminal">

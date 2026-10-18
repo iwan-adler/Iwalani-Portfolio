@@ -86,6 +86,7 @@
     (function follow(){ rx += (cx - rx) * .2; ry += (cy - ry) * .2; ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)'; requestAnimationFrame(follow); })();
     document.addEventListener('pointerover', e => {
       if (e.target.closest('#orbit-wrap')) return;
+      if (e.target.closest('#twin-btn, #twin-fab')) return setCur('label', 'chat');
       const hot = e.target.closest('a, button, .skill li, .chip, .tags span, .avatar');
       setCur(hot ? 'hot' : null);
     });
@@ -260,7 +261,7 @@
   const cmds = {
     help: () => {
       line('Available commands:', 'm');
-      [['whoami', 'who I am'], ['about', 'a little about me'], ['projects', "things I've built"], ['experience', 'leadership & roles'], ['skills', 'my toolkit'], ['achievements', 'beyond code'], ['contact', 'how to reach me'], ['goto <section>', 'jump to a section'], ['theme [light|dark]', 'switch the theme'], ['warp', 'spin the orbit'], ['sudo hire-me', 'try it'], ['clear', 'clear the screen'], ['exit', 'close the terminal']]
+      [['whoami', 'who I am'], ['about', 'a little about me'], ['projects', "things I've built"], ['experience', 'leadership & roles'], ['skills', 'my toolkit'], ['achievements', 'beyond code'], ['contact', 'how to reach me'], ['goto <section>', 'jump to a section'], ['theme [light|dark]', 'switch the theme'], ['warp', 'spin the orbit'], ['twin', 'chat with my AI twin'], ['sudo hire-me', 'try it'], ['clear', 'clear the screen'], ['exit', 'close the terminal']]
         .forEach(([c, d]) => line([{ cls: 'c', text: c.padEnd(20) }, d]));
     },
     whoami: () => { line('Iwalani Rosita'); line('Integrated M.Tech · CSE (AI & ML) · SRM University-AP', 'm'); },
@@ -283,6 +284,7 @@
     exit: () => closeTerm(),
     ls: () => line(sections.join('   '), 'c'),
     hello: () => line('Hi! 👋 Type help to look around.'),
+    twin: () => { line('Calling my AI twin…', 'g'); closeTerm(); setTimeout(() => window.openTwin && window.openTwin(), 150); },
   };
   cmds.hi = cmds.hello; cmds.cd = cmds.goto;
   const run = raw => {
@@ -292,7 +294,7 @@
     const [c, ...args] = v.split(/\s+/); const fn = cmds[c.toLowerCase()];
     fn ? fn(args) : line('command not found: ' + c + '. Type help.', 'm');
   };
-  const chipList = ['help', 'whoami', 'projects', 'skills', 'contact', 'warp', 'sudo hire-me'];
+  const chipList = ['help', 'whoami', 'projects', 'twin', 'contact', 'warp', 'sudo hire-me'];
   chipList.forEach(c => { const b = document.createElement('button'); b.type = 'button'; b.textContent = c; b.addEventListener('click', () => { run(c); input.focus(); }); $('#term-chips').append(b); });
   function openTerm() {
     lastFocus = document.activeElement; term.hidden = false;
@@ -317,4 +319,102 @@
 
   /* pause SMIL logo for reduced motion */
   if (reduce) { const l = $('#logo-svg'); l && l.pauseAnimations && l.pauseAnimations(); }
+})();
+
+/* ===== AI twin: animated character + chat ===== */
+(() => {
+  const $ = s => document.querySelector(s);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const twin = $('#twin'), btn = $('#twin-btn'), say = $('#twin-say'), fab = $('#twin-fab');
+  const chat = $('#chat'), log = $('#chat-log'), form = $('#chat-form'), input = $('#chat-input'), sugg = $('#chat-sugg');
+  if (!twin || !chat) return;
+  const EMAIL = 'rosiwa648@gmail.com';
+
+  /* speech bubble cycles through lines */
+  const lines = ["Hey! ✨ I'm Iwalani's AI twin.<br>Click me to chat!", "Ask me about SRM Orbit 🚀", "Curious what I build with? Ask me!", "Psst… I know all her projects 👀"];
+  let li = 0;
+  if (!reduce) setInterval(() => {
+    if (!chat.hidden) return;
+    say.classList.add('swap');
+    setTimeout(() => { li = (li + 1) % lines.length; say.innerHTML = lines[li]; say.classList.remove('swap'); }, 300);
+  }, 4200);
+
+  /* she leans toward the cursor */
+  if (!reduce) addEventListener('pointermove', e => {
+    const r = btn.getBoundingClientRect(); if (!r.width) return;
+    const dx = (e.clientX - (r.left + r.width / 2)) / innerWidth;
+    btn.querySelector('.twin-lean').style.setProperty('--lean', Math.max(-4, Math.min(4, dx * 9)).toFixed(2) + 'deg');
+  }, { passive: true });
+
+  /* floating launcher once the hero is out of view */
+  const hero = document.getElementById('home');
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { fab.hidden = es[0].isIntersecting || !chat.hidden; }).observe(hero);
+
+  /* local answers, used when the AI service is not reachable */
+  const KB = [
+    [/\b(hi|hey|hello|hii+|yo|namaste)\b/, "Hey there! 👋 I'm Iwalani's AI twin. Ask me about her projects, skills, experience or how to reach her."],
+    [/srm orbit|orbit|campus os|solution hunt|hackathon|google/, "SRM Orbit is my favourite build! 🚀 It's a Contextual Campus OS we made at Google Solution Hunt 2026, an AI layer that lets students ask about wayfinding, academics, transport, student services, health and emergency support in plain language. I led a three-person team with Aislinn Shaikh and Damini Roy. Built with Next.js, React, TypeScript, Tailwind CSS, the Gemini API and Vercel.\nDemo: https://google-solution-hunt-2026-qm9up1z9e-rosiwa648-6115.vercel.app/\nCode: https://github.com/iwan-adler/google-solution-hunt-2026"],
+    [/student management|first project|tkinter|sqlite|python/, "The Student Management System was my very first GitHub project. I built it to learn project structure and how to publish on GitHub. It uses Python, Tkinter and SQLite.\nhttps://github.com/iwan-adler/Student_management_system"],
+    [/project|built|build|work|portfolio/, "I've built two projects you'll see here: SRM Orbit, an AI-powered campus assistant from Google Solution Hunt 2026, and a Student Management System, my first GitHub project. Want details on either?"],
+    [/skill|stack|tech|language|know|tools?|react|next|typescript|javascript|c\+\+|gemini/, "My toolkit 🛠️\n• Programming: C++\n• Web: HTML, CSS, JavaScript, TypeScript, React, Next.js, Tailwind CSS\n• AI: Gemini API, AI integration, natural-language interfaces\n• Tools: Git, GitHub, VS Code, Vercel"],
+    [/e-?cell|experience|leader|role|lead|intern|job/, "I'm an Events & Operations Member at E-Cell, SRM University-AP, helping plan and run entrepreneurship events. I was also Team Leader at Google Solution Hunt 2026, where my team built SRM Orbit."],
+    [/achieve|award|ncc|certif|spell|sport/, "Beyond code: Team Leader at Google Solution Hunt 2026, E-Cell Events & Operations Member, the NCC A Certificate, plus Spell Bee and sports certifications. ✨"],
+    [/study|college|university|degree|education|srm|m\.?tech|course|year/, "I'm doing an Integrated M.Tech in Computer Science & Engineering (AI & ML) at SRM University-AP. 🎓"],
+    [/contact|email|mail|reach|hire|linkedin|connect|github|collab/, "I'd love to hear from you! 💌\nEmail: " + EMAIL + "\nLinkedIn: https://www.linkedin.com/in/iwalanirosita264826\nGitHub: https://github.com/iwan-adler"],
+    [/who|about|yourself|iwalani|rosita|tell me/, "I'm Iwalani Rosita's AI twin! She's a CSE (AI & ML) student at SRM University-AP who learns by building, mostly in AI and full-stack web development, through projects, hackathons and E-Cell."],
+    [/interest|hobby|passion|like|love|ai|ml|machine/, "I'm most excited about AI, machine learning and full-stack development, especially building practical tools people actually use. 💙"],
+    [/real|bot|ai twin|are you/, "I'm an AI twin, not Iwalani herself. I only answer from what's on her portfolio. For anything else, email her at " + EMAIL + "!"],
+  ];
+  const localAnswer = q => { const t = q.toLowerCase(); for (const [re, a] of KB) if (re.test(t)) return a; return "Hmm, I'm not sure about that one, and I don't want to make things up! 😅 Try asking about her projects, skills or experience, or email her at " + EMAIL + "."; };
+
+  /* rendering */
+  const linkify = (el, text) => {
+    const parts = text.split(/(https?:\/\/[^\s]+|[\w.+-]+@[\w-]+\.[\w.]+)/g);
+    parts.forEach((p, i) => {
+      if (i % 2) { const a = document.createElement('a'); a.textContent = p; a.href = p.includes('@') && !p.startsWith('http') ? 'mailto:' + p : p; a.target = '_blank'; a.rel = 'noopener'; el.append(a); }
+      else el.append(p);
+    });
+  };
+  const add = (who, text) => { const m = document.createElement('div'); m.className = 'msg ' + who; linkify(m, text); log.append(m); log.scrollTop = log.scrollHeight; return m; };
+  const typing = () => { const m = document.createElement('div'); m.className = 'msg bot typing'; m.innerHTML = '<i></i><i></i><i></i>'; log.append(m); log.scrollTop = log.scrollHeight; return m; };
+
+  const history = [];
+  let busy = false, greeted = false;
+  async function ask(q) {
+    q = q.trim(); if (!q || busy) return;
+    busy = true; add('me', q); history.push({ role: 'user', text: q });
+    const t = typing(); const started = Date.now();
+    let answer = null;
+    try {
+      const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 15000);
+      const r = await fetch('/api/twin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history.slice(-10) }), signal: ctl.signal });
+      clearTimeout(to);
+      if (r.ok) { const j = await r.json(); if (j && typeof j.reply === 'string' && j.reply.trim()) answer = j.reply.trim(); }
+    } catch (e) {}
+    if (!answer) answer = localAnswer(q);
+    const wait = Math.max(0, 650 - (Date.now() - started));
+    setTimeout(() => { t.remove(); add('bot', answer); history.push({ role: 'model', text: answer }); busy = false; }, wait);
+  }
+
+  const chips = ['Who are you?', 'Tell me about SRM Orbit', 'What are your skills?', 'Experience', 'How do I contact you?'];
+  chips.forEach(c => { const b = document.createElement('button'); b.type = 'button'; b.textContent = c; b.addEventListener('click', () => ask(c)); sugg.append(b); });
+
+  let lastFocus = null;
+  function openTwin() {
+    lastFocus = document.activeElement;
+    chat.hidden = false; fab.hidden = true;
+    if (!greeted) { greeted = true; add('bot', "Hey! ✨ I'm Iwalani's AI twin. I know all about her projects, skills and experience. What would you like to know?"); }
+    setTimeout(() => input.focus({ preventScroll: true }), 60);
+  }
+  function closeTwin() {
+    chat.hidden = true;
+    const r = hero.getBoundingClientRect(); fab.hidden = r.bottom > 0 && r.top < innerHeight;
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  }
+  window.openTwin = openTwin;
+  btn.addEventListener('click', () => { if (!reduce) { twin.classList.remove('hop'); void twin.offsetWidth; twin.classList.add('hop'); } setTimeout(openTwin, reduce ? 0 : 280); });
+  fab.addEventListener('click', openTwin);
+  $('#chat-close').addEventListener('click', closeTwin);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !chat.hidden) closeTwin(); });
+  form.addEventListener('submit', e => { e.preventDefault(); const v = input.value; input.value = ''; ask(v); });
 })();
