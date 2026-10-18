@@ -177,33 +177,115 @@
         <article class="card">
           <div class="visual">
             <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs><radialGradient id="hg" cx="45%" cy="40%" r="60%"><stop offset="0" stop-color="#2A3F7A"/><stop offset="1" stop-color="#0B1838"/></radialGradient></defs>
               <rect width="400" height="225" fill="#0B1838"/>
-              <g transform="translate(70 40)">
-                <rect width="260" height="150" rx="12" fill="#101F45" stroke="#9DB2D8" stroke-opacity=".3"/>
-                <circle cx="16" cy="16" r="4" fill="#79B8FF"/><circle cx="30" cy="16" r="4" fill="#4D7DFF" opacity=".7"/><circle cx="44" cy="16" r="4" fill="#9DB2D8" opacity=".5"/>
-                <g font-family="JetBrains Mono, monospace" font-size="10" fill="#9DB2D8">
-                  <text x="16" y="50">id</text><text x="60" y="50">name</text><text x="170" y="50">course</text>
-                </g>
-                <path d="M16 58 H244" stroke="#9DB2D8" stroke-opacity=".3"/>
-                <g fill="#CFE0FF" opacity=".75">
-                  <rect x="16" y="70" width="18" height="7" rx="3"/><rect x="60" y="70" width="80" height="7" rx="3"/><rect x="170" y="70" width="50" height="7" rx="3"/>
-                  <rect x="16" y="90" width="18" height="7" rx="3"/><rect x="60" y="90" width="64" height="7" rx="3"/><rect x="170" y="90" width="60" height="7" rx="3"/>
-                  <rect x="16" y="110" width="18" height="7" rx="3"/><rect x="60" y="110" width="92" height="7" rx="3"/><rect x="170" y="110" width="44" height="7" rx="3"/>
-                </g>
-                <rect x="16" y="126" width="56" height="14" rx="7" fill="#4D7DFF"/>
+              <g class="beat">
+                <path d="M200 196c-58-38-92-70-92-108 0-26 20-46 44-46 20 0 34 11 48 28 14-17 28-28 48-28 24 0 44 20 44 46 0 38-34 70-92 108z" fill="url(#hg)" stroke="#9DB2D8" stroke-opacity=".4"/>
+                <path class="art" d="M186 72c-12 22-14 48-8 74 4 18 12 30 20 40" stroke="#5CF0B4"/>
+                <path class="art" d="M214 70c18 10 30 28 34 48" stroke="#F5C451"/>
+                <path class="art" d="M160 90c-14 18-18 40-10 62" stroke="#FF6B7D"/>
+              </g>
+              <g font-family="JetBrains Mono, monospace" font-size="10" fill="#CFE0FF">
+                <text x="258" y="122">LCX</text><text x="200" y="208">LAD</text><text x="112" y="160">RCA</text>
               </g>
             </svg>
-            <span class="tag mono">FIRST GITHUB PROJECT</span>
+            <span class="tag mono">ML · 3D · EXPLAINABLE AI</span>
           </div>
           <div class="card-body">
-            <h3>Student Management System <small>Where it started</small></h3>
-            <p>My first GitHub project, built as a practical exercise to understand project structure, programming concepts, and the process of building and publishing a project on GitHub.</p>
-            <div class="tags"><span>Python</span><span>Tkinter</span><span>SQLite</span></div>
+            <h3>CardioAI <small>Coronary risk &amp; 3D heart</small></h3>
+            <p>Predicts coronary artery disease and stenosis in the LAD, LCX and RCA arteries from routine clinical data, then paints each artery's risk onto an interactive 3D heart with SHAP explanations.</p>
+            <ul class="features">
+              <li>One tuned model per artery</li><li>No target leakage, enforced by tests</li><li>Live updates as inputs change</li><li>CAD test ROC-AUC 0.840</li>
+            </ul>
+            <div class="tags"><span>scikit-learn</span><span>XGBoost</span><span>SHAP</span><span>FastAPI</span><span>React Three Fiber</span></div>
             <div class="card-actions">
-              <a class="btn btn-line" href="https://github.com/iwan-adler/Student_management_system" target="_blank" rel="noopener"><svg><use href="#i-gh"/></svg>GitHub</a>
+              <a class="btn btn-line" href="https://github.com/iwan-adler/Multimodal-CardioAI" target="_blank" rel="noopener"><svg><use href="#i-gh"/></svg>GitHub</a>
             </div>
           </div>
         </article>
+      </div>
+
+      <div class="more-head">
+        <h3 class="more-title">More builds <span class="mono" id="proj-count">10 projects</span></h3>
+        <div class="filters" role="group" aria-label="Filter projects">
+          <button type="button" class="filter on" data-f="all" aria-pressed="true">All</button>
+          <button type="button" class="filter" data-f="ai" aria-pressed="false">AI &amp; ML</button>
+          <button type="button" class="filter" data-f="sys" aria-pressed="false">Systems</button>
+          <button type="button" class="filter" data-f="app" aria-pressed="false">Web apps</button>
+          <button type="button" class="filter" data-f="auto" aria-pressed="false">Automation</button>
+        </div>
+      </div>
+      <div class="mini-grid" id="mini-grid">
+        <a class="mini" data-cat="ai" href="https://github.com/iwan-adler/personal-ai-agent" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">AI &AMP; ML</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>Personal AI Agent</h4>
+          <p>Koda, a command-line assistant where the LLM proposes and Python decides. Every tool call is checked against a schema, allowlist, permissions and risk level, then written to an audit log.</p>
+          <span class="mini-hl mono">v1.0 · local web UI with approvals</span>
+          <span class="tags"><span>Python</span><span>FastAPI</span><span>Pydantic</span><span>SQLite</span><span>Ollama</span></span>
+        </a>
+        <a class="mini" data-cat="ai" href="https://github.com/iwan-adler/neural-net-from-scratch" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">AI &AMP; ML</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>Neural Net from Scratch</h4>
+          <p>A NumPy-only neural network library with dense layers, dropout, Adam and early stopping. Every backward pass is checked against numerical gradients.</p>
+          <span class="mini-hl mono">97.39% on digits, on par with scikit-learn</span>
+          <span class="tags"><span>NumPy</span><span>scikit-learn</span><span>Matplotlib</span></span>
+        </a>
+        <a class="mini" data-cat="ai" href="https://github.com/iwan-adler/sms-spam-classifier" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">AI &AMP; ML</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>SMS Spam Classifier</h4>
+          <p>Spam or ham, built around honest evaluation: leakage-free grouped splits, baselines, cross-validation and a precision-first threshold, served by an API that explains each decision.</p>
+          <span class="mini-hl mono">F1 0.955 · PR-AUC 0.988 on held-out test</span>
+          <span class="tags"><span>scikit-learn</span><span>TF-IDF</span><span>Linear SVM</span><span>FastAPI</span></span>
+        </a>
+        <a class="mini" data-cat="sys" href="https://github.com/iwan-adler/mini-redis" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">SYSTEMS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>mini-redis</h4>
+          <p>A Redis-compatible key-value server in pure Python asyncio. It speaks RESP2 and RESP3, so the official redis-py client and redis-cli work with it unchanged.</p>
+          <span class="mini-hl mono">Checked against real Redis in CI</span>
+          <span class="tags"><span>Python</span><span>asyncio</span><span>RESP</span><span>AOF persistence</span></span>
+        </a>
+        <a class="mini" data-cat="sys" href="https://github.com/iwan-adler/http-server-from-scratch" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">SYSTEMS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>minihttp</h4>
+          <p>An HTTP/1.1 server built from raw sockets, with WebSockets (RFC 6455) implemented from scratch and a multi-room real-time chat on top.</p>
+          <span class="mini-hl mono">No frameworks, standard library only</span>
+          <span class="tags"><span>Python</span><span>sockets</span><span>HTTP/1.1</span><span>WebSockets</span></span>
+        </a>
+        <a class="mini" data-cat="app" href="https://github.com/iwan-adler/ai-study-planner" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">WEB APPS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>AI Study Planner</h4>
+          <p>Turns tasks, deadlines and weekly availability into a realistic schedule, and replans when sessions are missed. The scheduler is rule-based; AI explanations are optional.</p>
+          <span class="mini-hl mono">Honest about what can't fit</span>
+          <span class="tags"><span>FastAPI</span><span>SQLAlchemy</span><span>SQLite</span><span>JavaScript</span></span>
+        </a>
+        <a class="mini" data-cat="app" href="https://github.com/iwan-adler/campus-lost-and-found" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">WEB APPS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>Campus Lost &amp; Found</h4>
+          <p>Students report and search lost or found items, and finders verify claims before handing anything over. Contact details are never shown publicly.</p>
+          <span class="mini-hl mono">Claim verification built in</span>
+          <span class="tags"><span>FastAPI</span><span>SQLite</span><span>HTML</span><span>CSS</span><span>JavaScript</span></span>
+        </a>
+        <a class="mini" data-cat="app" href="https://github.com/iwan-adler/api-health-monitor" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">WEB APPS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>API Health Monitor</h4>
+          <p>A self-hosted uptime checker that marks endpoints healthy, unhealthy or unreachable and serves history, uptime and latency through a REST API.</p>
+          <span class="mini-hl mono">Concurrent checks · uptime %</span>
+          <span class="tags"><span>FastAPI</span><span>HTTPX</span><span>SQLite</span></span>
+        </a>
+        <a class="mini" data-cat="auto" href="https://github.com/iwan-adler/career-inbox-automation" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">AUTOMATION</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>Career Inbox Automation</h4>
+          <p>An n8n workflow that sorts career emails in Gmail into internships, events, university and deadlines, pulls out deadlines and drafts replies for review. It never sends anything itself.</p>
+          <span class="mini-hl mono">You stay in control</span>
+          <span class="tags"><span>n8n</span><span>Gmail</span><span>JavaScript</span></span>
+        </a>
+        <a class="mini" data-cat="app" href="https://github.com/iwan-adler/Student_management_system" target="_blank" rel="noopener">
+          <span class="mini-top"><span class="mono mini-cat">WEB APPS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
+          <h4>Student Management System</h4>
+          <p>My first GitHub project, built as a practical exercise to understand project structure, programming concepts, and how to publish a project on GitHub.</p>
+          <span class="mini-hl mono">Where it all started</span>
+          <span class="tags"><span>Python</span><span>Tkinter</span><span>SQLite</span></span>
+        </a>
       </div>
     </div>
   </section>

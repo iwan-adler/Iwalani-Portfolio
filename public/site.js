@@ -38,7 +38,7 @@
   /* ---------- reveal on scroll (visible at rest) ---------- */
   if (!reduce && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
-    $$('.h2, .about-text, .edu, .card, .role, .skill, .feat, .big').forEach(el => {
+    $$('.h2, .about-text, .edu, .card, .role, .skill, .feat, .big, .mini').forEach(el => {
       el.classList.add('reveal'); el.style.animationDelay = ([...el.parentNode.children].indexOf(el) % 4) * 90 + 'ms'; io.observe(el);
     });
   }
@@ -110,6 +110,16 @@
     });
     c.addEventListener('pointerleave', () => { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); });
   });
+
+  /* ---------- project filters + mini-card spotlight ---------- */
+  const minis = $$('.mini'), count = $('#proj-count');
+  minis.forEach(m => m.addEventListener('pointermove', e => { const r = m.getBoundingClientRect(); m.style.setProperty('--mx', (e.clientX - r.left) + 'px'); m.style.setProperty('--my', (e.clientY - r.top) + 'px'); }));
+  $$('.filter').forEach(f => f.addEventListener('click', () => {
+    $$('.filter').forEach(x => { x.classList.toggle('on', x === f); x.setAttribute('aria-pressed', x === f); });
+    let n = 0;
+    minis.forEach(m => { const show = f.dataset.f === 'all' || m.dataset.cat === f.dataset.f; m.hidden = !show; m.classList.remove('pop', 'reveal', 'in'); if (show) { n++; if (!reduce) { void m.offsetWidth; m.classList.add('pop'); } } });
+    if (count) count.textContent = n + (n === 1 ? ' project' : ' projects');
+  }));
 
   /* ---------- hero visibility (pause canvases offscreen) ---------- */
   let heroOn = true;
@@ -269,8 +279,10 @@
     projects: () => {
       line([{ cls: 'c', text: '★ SRM Orbit' }, ' · Contextual Campus OS (Google Solution Hunt 2026)']);
       line(['  ', { href: 'https://google-solution-hunt-2026-qm9up1z9e-rosiwa648-6115.vercel.app/', text: 'live demo' }, '  ', { href: 'https://github.com/iwan-adler/google-solution-hunt-2026', text: 'github' }]);
-      line([{ cls: 'c', text: '◦ Student Management System' }, ' · my first GitHub project']);
-      line(['  ', { href: 'https://github.com/iwan-adler/Student_management_system', text: 'github' }]);
+      line([{ cls: 'c', text: '★ CardioAI' }, ' · coronary risk prediction on a 3D heart']);
+      line(['  ', { href: 'https://github.com/iwan-adler/Multimodal-CardioAI', text: 'github' }]);
+      [['Personal AI Agent', 'personal-ai-agent'], ['Neural Net from Scratch', 'neural-net-from-scratch'], ['SMS Spam Classifier', 'sms-spam-classifier'], ['mini-redis', 'mini-redis'], ['minihttp', 'http-server-from-scratch'], ['AI Study Planner', 'ai-study-planner'], ['Campus Lost & Found', 'campus-lost-and-found'], ['API Health Monitor', 'api-health-monitor'], ['Career Inbox Automation', 'career-inbox-automation'], ['Student Management System', 'Student_management_system']]
+        .forEach(([n, r]) => line([{ cls: 'c', text: '◦ ' + n.padEnd(27) }, { href: 'https://github.com/iwan-adler/' + r, text: 'github' }]));
     },
     experience: () => { line([{ cls: 'c', text: 'Team Leader' }, ' · Google Solution Hunt 2026 · SRM Orbit (with Aislinn Shaikh & Damini Roy)']); line([{ cls: 'c', text: 'Events & Operations Member' }, ' · E-Cell, SRM University-AP']); },
     skills: () => { line([{ cls: 'c', text: 'programming '.padEnd(13) }, 'C++']); line([{ cls: 'c', text: 'web'.padEnd(13) }, 'HTML · CSS · JavaScript · TypeScript · React · Next.js · Tailwind CSS']); line([{ cls: 'c', text: 'ai'.padEnd(13) }, 'Gemini API · AI integration · natural-language interfaces']); line([{ cls: 'c', text: 'tools'.padEnd(13) }, 'Git · GitHub · VS Code · Vercel']); },
@@ -354,8 +366,18 @@
   const KB = [
     [/\b(hi|hey|hello|hii+|yo|namaste)\b/, "Hey there! 👋 I'm Iwalani's AI twin. Ask me about her projects, skills, experience or how to reach her."],
     [/srm orbit|orbit|campus os|solution hunt|hackathon|google/, "SRM Orbit is my favourite build! 🚀 It's a Contextual Campus OS we made at Google Solution Hunt 2026, an AI layer that lets students ask about wayfinding, academics, transport, student services, health and emergency support in plain language. I led a three-person team with Aislinn Shaikh and Damini Roy. Built with Next.js, React, TypeScript, Tailwind CSS, the Gemini API and Vercel.\nDemo: https://google-solution-hunt-2026-qm9up1z9e-rosiwa648-6115.vercel.app/\nCode: https://github.com/iwan-adler/google-solution-hunt-2026"],
+    [/cardio|heart|coronary|medical|health ?care|shap|xgboost/, "CardioAI predicts coronary artery disease and stenosis in the LAD, LCX and RCA arteries from routine clinical data, then colours each artery by risk on an interactive 3D heart. Click an artery and SHAP explains why. 🫀 It uses scikit-learn, XGBoost, SHAP, FastAPI and React Three Fiber. CAD test ROC-AUC is 0.840. (Educational decision support only, not a diagnosis.)\nhttps://github.com/iwan-adler/Multimodal-CardioAI"],
+    [/agent|koda|assistant|llm|ollama|prompt injection/, "Koda is my Personal AI Agent: a command-line assistant built on one rule, the LLM proposes and Python decides. 🤖 Every tool call is checked against a schema, an allowlist, permissions and a risk level, and logged. It runs with OpenAI-compatible APIs or a free local model through Ollama, and has a local web UI with approvals.\nhttps://github.com/iwan-adler/personal-ai-agent"],
+    [/neural|numpy|backprop|from scratch|digits|deep learning/, "My Neural Net from Scratch is a NumPy-only library: dense layers, dropout, Adam, early stopping, with every backward pass checked against numerical gradients. It hits 97.39% on scikit-learn's digits, on par with scikit-learn's own MLP. 🧠\nhttps://github.com/iwan-adler/neural-net-from-scratch"],
+    [/spam|sms|classif|tf-?idf|svm/, "The SMS Spam Classifier is all about honest evaluation: leakage-free grouped splits, baselines, cross-validation and a precision-first threshold. The final linear SVM scores F1 0.955 and PR-AUC 0.988 on held-out data, and a small API explains each prediction. 📩\nhttps://github.com/iwan-adler/sms-spam-classifier"],
+    [/redis|key.?value|database server|resp/, "mini-redis is a Redis-compatible key-value server in pure Python asyncio. It speaks RESP2 and RESP3, so the official redis-py client and redis-cli work unchanged, with expiry, pipelining and append-only-file persistence, checked against real Redis in CI. ⚡\nhttps://github.com/iwan-adler/mini-redis"],
+    [/http|web ?server|socket|websocket|minihttp/, "minihttp is an HTTP/1.1 server I built from raw sockets, no frameworks. It also implements WebSockets from scratch and has a multi-room real-time chat on top. 🌐\nhttps://github.com/iwan-adler/http-server-from-scratch"],
+    [/study planner|planner|schedul|timetable/, "The AI Study Planner turns tasks, deadlines and weekly availability into a realistic schedule and replans when sessions are missed. The scheduler is rule-based, and AI only explains the plan. Built with FastAPI, SQLAlchemy and SQLite. 📚\nhttps://github.com/iwan-adler/ai-study-planner"],
+    [/lost|found|claim/, "Campus Lost & Found lets students report and search lost or found items, and finders verify a claim before handing anything over. Contact details are never public. Built with FastAPI and SQLite. 🔎\nhttps://github.com/iwan-adler/campus-lost-and-found"],
+    [/monitor|uptime|health check|api health/, "API Health Monitor is a self-hosted uptime checker: it marks endpoints healthy, unhealthy or unreachable and serves history, uptime and latency through a REST API. Built with FastAPI, HTTPX and SQLite. 📈\nhttps://github.com/iwan-adler/api-health-monitor"],
+    [/inbox|gmail|n8n|automation|email workflow/, "Career Inbox Automation is an n8n workflow that sorts career emails in Gmail into internships, events, university and deadlines, extracts deadlines, and drafts replies for me to review. It never sends anything on its own. ✉️\nhttps://github.com/iwan-adler/career-inbox-automation"],
     [/student management|first project|tkinter|sqlite|python/, "The Student Management System was my very first GitHub project. I built it to learn project structure and how to publish on GitHub. It uses Python, Tkinter and SQLite.\nhttps://github.com/iwan-adler/Student_management_system"],
-    [/project|built|build|work|portfolio/, "I've built two projects you'll see here: SRM Orbit, an AI-powered campus assistant from Google Solution Hunt 2026, and a Student Management System, my first GitHub project. Want details on either?"],
+    [/project|built|build|work|portfolio|github|repo/, "I've built quite a few things! 🚀\n• AI & ML: SRM Orbit, CardioAI, Personal AI Agent (Koda), Neural Net from Scratch, SMS Spam Classifier\n• Systems: mini-redis, minihttp\n• Web apps: AI Study Planner, Campus Lost & Found, API Health Monitor, Student Management System\n• Automation: Career Inbox Automation\nAsk me about any of them!"],
     [/skill|stack|tech|language|know|tools?|react|next|typescript|javascript|c\+\+|gemini/, "My toolkit 🛠️\n• Programming: C++\n• Web: HTML, CSS, JavaScript, TypeScript, React, Next.js, Tailwind CSS\n• AI: Gemini API, AI integration, natural-language interfaces\n• Tools: Git, GitHub, VS Code, Vercel"],
     [/e-?cell|experience|leader|role|lead|intern|job/, "I'm an Events & Operations Member at E-Cell, SRM University-AP, helping plan and run entrepreneurship events. I was also Team Leader at Google Solution Hunt 2026, where my team built SRM Orbit."],
     [/achieve|award|ncc|certif|spell|sport/, "Beyond code: Team Leader at Google Solution Hunt 2026, E-Cell Events & Operations Member, the NCC A Certificate, plus Spell Bee and sports certifications. ✨"],
@@ -396,7 +418,7 @@
     setTimeout(() => { t.remove(); add('bot', answer); history.push({ role: 'model', text: answer }); busy = false; }, wait);
   }
 
-  const chips = ['Who are you?', 'Tell me about SRM Orbit', 'What are your skills?', 'Experience', 'How do I contact you?'];
+  const chips = ['What have you built?', 'Tell me about SRM Orbit', 'What is CardioAI?', 'Tell me about mini-redis', 'What are your skills?', 'How do I contact you?'];
   chips.forEach(c => { const b = document.createElement('button'); b.type = 'button'; b.textContent = c; b.addEventListener('click', () => ask(c)); sugg.append(b); });
 
   let lastFocus = null;
