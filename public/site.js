@@ -179,6 +179,45 @@
   size();
   let tilt = -.32, squash = .42;
   const pos = (ring, a) => { const R = rings[ring] * W / 2, x = Math.cos(a) * R, y = Math.sin(a) * R * squash; return { x: W / 2 + x * Math.cos(tilt) - y * Math.sin(tilt), y: H / 2 + x * Math.sin(tilt) + y * Math.cos(tilt), z: Math.sin(a) }; };
+  /* the IR logo at the centre, built from three light layers (letters + inner ring, outer circle, sparkle) */
+  const logo = {};
+  ['core', 'ring', 'spark'].forEach(k => { const im = new Image(); im.onload = () => { if (reduce) draw(0); }; im.src = '/logo-' + k + '.webp'; logo[k] = im; });
+  const shine = document.createElement('canvas'), shx = shine.getContext('2d'); shine.width = shine.height = 384;
+  const ready = im => im.complete && im.naturalWidth;
+  function drawLogo(cx, cy, cr, t) {
+    const S = cr * 3.5, h = S / 2, y = cy + (reduce ? 0 : Math.sin(t * .9) * S * .012);
+    const halo = ctx.createRadialGradient(cx, y, 0, cx, y, h * 1.25);
+    halo.addColorStop(0, 'rgba(44,99,240,' + (.3 + (reduce ? 0 : Math.sin(t * 1.4) * .06) + (coreHover ? .12 : 0)).toFixed(3) + ')'); halo.addColorStop(.55, 'rgba(30,70,200,.12)'); halo.addColorStop(1, 'rgba(5,11,30,0)');
+    ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(cx, y, h * 1.25, 0, 6.283); ctx.fill();
+    if (!ready(logo.core)) return;
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    if (ready(logo.ring)) { ctx.save(); ctx.translate(cx, y); ctx.rotate(t * .12 + spin * .4); ctx.drawImage(logo.ring, -h, -h, S, S); ctx.restore(); }
+    ctx.drawImage(logo.core, cx - h, y - h, S, S); ctx.globalAlpha = .35; ctx.drawImage(logo.core, cx - h, y - h, S, S); ctx.globalAlpha = 1;
+    // a light sweep across the letters every few seconds
+    const sp = (t * .22) % 1.7 - .35;
+    if (!reduce && sp > -.3 && sp < 1.3) {
+      const n = shine.width; shx.globalCompositeOperation = 'source-over'; shx.clearRect(0, 0, n, n);
+      const bx = sp * n, gr = shx.createLinearGradient(bx - n * .12, 0, bx + n * .12, n * .25);
+      gr.addColorStop(0, 'rgba(190,225,255,0)'); gr.addColorStop(.5, 'rgba(210,235,255,.55)'); gr.addColorStop(1, 'rgba(190,225,255,0)');
+      shx.fillStyle = gr; shx.fillRect(0, 0, n, n); shx.globalCompositeOperation = 'destination-in'; shx.drawImage(logo.core, 0, 0, n, n);
+      ctx.drawImage(shine, cx - h, y - h, S, S);
+    }
+    // a little comet riding the inner ring, dimmer while it passes behind the letters
+    const ex = cx + (.4998 - .5) * S, ey = y + (.5312 - .5) * S, ra = .4279 * S, rb = .119 * S, th = -.3595, c = Math.cos(th), s2 = Math.sin(th);
+    const at = u => ({ x: ex + ra * Math.cos(u) * c - rb * Math.sin(u) * s2, y: ey + ra * Math.cos(u) * s2 + rb * Math.sin(u) * c });
+    const u0 = t * .8 + 1.2;
+    for (let k = 0; k < 14; k++) {
+      const u = u0 - k * .045, q = at(u), front = .25 + .75 * Math.max(0, Math.min(1, (Math.sin(u) + .25) * 2)), f = 1 - k / 14;
+      ctx.fillStyle = 'rgba(' + (k ? '121,184,255,' : '234,242,255,') + (front * f * (k ? .55 : 1)).toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(q.x, q.y, S * .011 * (k ? f * .8 : 1.1), 0, 6.283); ctx.fill();
+    }
+    if (ready(logo.spark)) {
+      const tw = reduce ? .9 : .78 + .32 * Math.pow(Math.max(0, Math.sin(t * 1.9)), 3) + .06 * Math.sin(t * 7.3);
+      ctx.save(); ctx.translate(cx + (.7925 - .5) * S, y + (.25 - .5) * S); ctx.rotate(reduce ? 0 : Math.sin(t * .7) * .25); ctx.scale(tw, tw);
+      ctx.drawImage(logo.spark, -.7925 * S, -.25 * S, S, S); ctx.restore();
+    }
+    ctx.restore();
+  }
   function draw(t) {
     if (!reduce) { tilt += ((-.32 + px * .35) - tilt) * .06; squash += ((.42 + py * .3) - squash) * .06; }
     ctx.clearRect(0, 0, W, H);
@@ -200,11 +239,7 @@
     placed.filter(i => i.p.z < 0).forEach(drawBody);
     const pulse = 1 + (reduce ? 0 : Math.sin(t * 1.4) * .04) + (coreHover ? .08 : 0);
     const cr = W * .12 * pulse; coreR = cr;
-    const g = ctx.createRadialGradient(cx0 - cr * .3, cy0 - cr * .3, 0, cx0, cy0, cr * 2.4);
-    g.addColorStop(0, '#EAF2FF'); g.addColorStop(.18, '#9FD0FF'); g.addColorStop(.42, '#2C63F0'); g.addColorStop(1, 'rgba(5,11,30,0)');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx0, cy0, cr * 2.4, 0, 6.283); ctx.fill();
-    ctx.fillStyle = '#050B1E'; ctx.font = 'italic ' + (cr * .95) + 'px "Instrument Serif", Georgia, serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('ir', cx0, cy0 + cr * .04); ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+    drawLogo(cx0, cy0, cr, t);
     placed.filter(i => i.p.z >= 0).forEach(drawBody);
   }
   const hit = (x, y) => {
