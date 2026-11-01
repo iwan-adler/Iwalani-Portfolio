@@ -24,23 +24,17 @@
           <g transform="rotate(-24 20 20)">
             <path d="M3 20a17 6.5 0 1 0 34 0" fill="none" stroke="#79B8FF" stroke-opacity=".35" stroke-width="1"/>
           </g>
-          <circle cx="20" cy="20" r="9" fill="#4D7DFF" opacity=".55" filter="url(#lglow)">
-            <animate attributeName="r" values="9;10.5;9" dur="3.2s" repeatCount="indefinite"/>
-          </circle>
+          
           <circle cx="20" cy="20" r="8" fill="url(#lg)"/>
           <g transform="rotate(-24 20 20)">
             <path d="M37 20a17 6.5 0 1 0 -34 0" fill="none" stroke="#79B8FF" stroke-opacity=".75" stroke-width="1.1"/>
-            <circle r="2.3" fill="#CFE6FF">
-              <animateMotion dur="3.6s" repeatCount="indefinite" path="M37 20a17 6.5 0 1 1 -34 0a17 6.5 0 1 1 34 0"/>
-            </circle>
-            <circle r="1.3" fill="#79B8FF" opacity=".8">
-              <animateMotion dur="3.6s" begin="-1.8s" repeatCount="indefinite" path="M37 20a17 6.5 0 1 1 -34 0a17 6.5 0 1 1 34 0"/>
-            </circle>
+            <circle cx="37" cy="20" r="2.3" fill="#CFE6FF"/>
+            <circle cx="3" cy="20" r="1.3" fill="#79B8FF" opacity=".8"/>
           </g>
         </svg>
       </span><span class="bn">Iwalani Rosita</span></a>
     <div class="nav-tools">
-      <button class="tool-btn" id="term-btn" type="button" aria-label="Open terminal"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m4 17 6-5-6-5M12 19h8"/></svg><span class="lbl">Terminal</span><span class="kbd lbl">/</span></button>
+      <button class="tool-btn" id="term-btn" type="button" aria-label="Open terminal (press /)" title="Terminal (/)"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m4 17 6-5-6-5M12 19h8"/></svg></button>
       <button class="tool-btn" id="theme-btn" type="button" aria-label="Switch light or dark theme"><svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg></button>
       <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav-links"><svg width="18" height="18"><use href="#i-menu"/></svg>Menu</button>
     </div>
@@ -50,30 +44,26 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#achievements">Activities</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
   <div class="progress" id="progress"></div>
 </div>
-<div class="cur cur-ring" id="cur-ring"><span id="cur-label">drag</span></div>
-<div class="cur cur-dot" id="cur-dot"></div>
+
 
 <header class="hero" id="home">
   <canvas id="sky" aria-hidden="true"></canvas>
-  <div class="grid-lines" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <span class="status mono rise"><span class="dot"></span>Building &amp; learning · <span id="clock">IST</span></span>
-      <p class="hi rise d1">Hi, I'm</p>
-      <h1 class="name rise d2" aria-label="Iwalani Rosita"><span class="first" id="first" aria-hidden="true">Iwalani</span><span class="last" aria-hidden="true">Rosita.</span></h1>
-      <div class="roles rise d3" aria-label="CSE (AI and ML) Student, Developer, Builder"><span class="prompt" aria-hidden="true">~/iwalani $</span><span aria-hidden="true"><span id="typed">CSE (AI &amp; ML) Student</span><span class="caret"></span></span></div>
-      <p class="intro rise d4">I'm an Integrated M.Tech CSE (AI &amp; ML) student at SRM University-AP, passionate about building practical technology solutions and exploring the possibilities of AI and full-stack development.</p>
-      <div class="ctas rise d5">
-        <a class="btn btn-primary" href="#projects">View my projects <svg><use href="#i-down"/></svg></a>
-        <a class="btn btn-ghost" href="#contact">Let's connect <svg><use href="#i-arrow"/></svg></a>
+      <p class="kicker rise">CSE (AI &amp; ML) · SRM University-AP</p>
+      <h1 class="name rise d1" id="first">Iwalani Rosita</h1>
+      <p class="intro rise d2">I'm a first-year Integrated M.Tech student, and I learn by building things from the ground up: a Redis-compatible server, an HTTP server on raw sockets, a neural network in plain NumPy. At Google Solution Hunt 2026 I led the team that built SRM Orbit, a natural-language assistant for our campus.</p>
+      <div class="ctas rise d3">
+        <a class="btn btn-primary" href="#projects">See projects</a>
+        <a class="btn btn-ghost" href="#contact">Get in touch</a>
       </div>
-      <div class="socials rise d5">
+      <div class="socials rise d3">
         <a class="icon-link" href="https://github.com/iwan-adler" target="_blank" rel="noopener" aria-label="GitHub"><svg><use href="#i-gh"/></svg></a>
         <a class="icon-link" href="https://www.linkedin.com/in/iwalani-rosita-244806406" target="_blank" rel="noopener" aria-label="LinkedIn"><svg><use href="#i-in"/></svg></a>
         <a class="icon-link" href="#contact" aria-label="Email address"><svg><use href="#i-mail"/></svg></a>
@@ -82,11 +72,10 @@
     <div class="hero-art rise d3">
       <div class="orbit-wrap" id="orbit-wrap" aria-hidden="true">
         <canvas id="orbit"></canvas>
-        <span class="orbit-hint mono"><b>drag</b> to spin · <b>tap</b> a planet</span>
-        <span class="orbit-caption mono">fig. 01 — what I orbit around</span>
+        
       </div>
       <div class="twin" id="twin">
-        <div class="twin-bubble" id="twin-bubble" aria-hidden="true"><span id="twin-say">Hey! ✨ I'm Iwalani's AI twin.<br>Click me to chat!</span></div>
+        <div class="twin-bubble" id="twin-bubble" aria-hidden="true"><span id="twin-say">Hi, I'm Iwalani's AI twin.<br>Ask me anything.</span></div>
         <button class="twin-body" id="twin-btn" type="button" aria-label="Chat with Iwalani's AI twin">
           <span class="twin-pad" aria-hidden="true"><i></i><i></i></span>
           <span class="twin-lean">
@@ -106,40 +95,28 @@
               </g>
             </svg>
           </span>
-          <span class="emotes" id="twin-emotes" aria-hidden="true"></span>
-          <span class="spark s1" aria-hidden="true"></span><span class="spark s2" aria-hidden="true"></span><span class="spark s3" aria-hidden="true"></span><span class="spark s4" aria-hidden="true"></span><span class="spark s5" aria-hidden="true"></span>
         </button>
       </div>
     </div>
   </div>
 </header>
 
-<div class="marquee" aria-hidden="true">
-  <div class="track">
-    <span>Artificial Intelligence</span><span>Machine Learning</span><span>Full-stack</span><span>Next.js</span><span>Gemini API</span><span>TypeScript</span><span>C++</span><span>Hackathons</span><span>Learning by building</span>
-    <span>Artificial Intelligence</span><span>Machine Learning</span><span>Full-stack</span><span>Next.js</span><span>Gemini API</span><span>TypeScript</span><span>C++</span><span>Hackathons</span><span>Learning by building</span>
-  </div>
-</div>
 
 <main>
   <section class="block" id="about">
     <div class="wrap">
-      <span class="eyebrow mono">About</span>
-      <h2 class="h2">A little <em>about me</em></h2>
+      <h2 class="h2">About</h2>
       <div class="about">
         <div class="about-text">
-          <p>I'm a CSE student who learns best by building, turning ideas into small working things and then making them better.</p>
-          <p>I'm studying Computer Science with a focus on AI &amp; Machine Learning, and I spend a lot of my time growing my programming skills, especially in AI and full-stack web development.</p>
+          <p>I like understanding how things work underneath, so a lot of my projects rebuild something familiar from scratch.</p>
+          <p>I'm studying Computer Science with a specialization in AI &amp; Machine Learning. Outside coursework I split my time between machine learning projects and full-stack web apps.</p>
           <p>Most of what I know comes from projects. I take part in hackathons, where I've led a team from idea to deployed product, and I stay involved in university life through E-Cell at SRM University-AP.</p>
-          <div class="interests">
-            <span class="chip">Artificial Intelligence</span><span class="chip">Machine Learning</span><span class="chip">Full-stack development</span><span class="chip">Web development</span><span class="chip">Practical tech solutions</span>
-          </div>
         </div>
         <aside class="edu" aria-label="Education">
-          <span class="mono">EDUCATION</span>
+          <span class="mono">Education</span>
           <h3>Integrated M.Tech</h3>
-          <p class="field">Computer Science &amp; Engineering<br>(AI &amp; ML)</p>
-          <div class="uni"><span>SRM University-AP</span><span class="mono">Currently studying</span></div>
+          <p class="field">Computer Science &amp; Engineering (AI &amp; ML)</p>
+          <div class="uni"><span>SRM University-AP</span><span>First year</span></div>
         </aside>
       </div>
     </div>
@@ -147,8 +124,7 @@
 
   <section class="block" id="projects" style="padding-top:0">
     <div class="wrap">
-      <span class="eyebrow mono">Projects</span>
-      <h2 class="h2">Things I've <em>built</em></h2>
+      <h2 class="h2">Projects</h2>
       <div class="projects">
         <article class="card">
           <div class="visual">
@@ -175,17 +151,14 @@
               </g>
               <g stroke="#9DB2D8" stroke-opacity=".25"><path d="M262 224 L250 286"/><path d="M395 156 L410 116"/></g>
             </svg>
-            <span class="tag mono">FEATURED · GOOGLE SOLUTION HUNT 2026</span>
+            <span class="tag mono">Google Solution Hunt 2026</span>
           </div>
           <div class="card-body">
-            <h3>SRM Orbit <small>Contextual Campus OS</small></h3>
-            <p>An AI-powered campus interaction layer built during Google Solution Hunt 2026 to help students access campus information and services through natural-language interaction.</p>
-            <ul class="features">
-              <li>Natural-language interaction</li><li>Intent detection</li><li>Campus wayfinding</li><li>Academic info</li><li>Transport info</li><li>Student services</li><li>Health &amp; emergency support</li><li>Accessibility</li>
-            </ul>
-            <div class="tags"><span>Next.js</span><span>React</span><span>TypeScript</span><span>Tailwind CSS</span><span>Gemini API</span><span>Vercel</span></div>
+            <h3>SRM Orbit</h3>
+            <p>A campus assistant my team of three built at Google Solution Hunt 2026. Students ask in plain language and it works out what they need: directions, academic info, transport, student services, health and emergency contacts. Built with accessibility in mind.</p>
+                        <div class="tags">Next.js · React · TypeScript · Tailwind CSS · Gemini API · Vercel</div>
             <div class="card-actions">
-              <a class="btn btn-solid" href="https://google-solution-hunt-2026-qm9up1z9e-rosiwa648-6115.vercel.app/" target="_blank" rel="noopener">Live Demo <svg><use href="#i-arrow"/></svg></a>
+              <a class="btn btn-solid" href="https://google-solution-hunt-2026-qm9up1z9e-rosiwa648-6115.vercel.app/" target="_blank" rel="noopener">Live demo</a>
               <a class="btn btn-line" href="https://github.com/iwan-adler/google-solution-hunt-2026" target="_blank" rel="noopener"><svg><use href="#i-gh"/></svg>GitHub</a>
             </div>
           </div>
@@ -206,15 +179,15 @@
                 <text x="258" y="122">LCX</text><text x="200" y="208">LAD</text><text x="112" y="160">RCA</text>
               </g>
             </svg>
-            <span class="tag mono">ML · 3D · EXPLAINABLE AI</span>
+            <span class="tag mono">Machine learning</span>
           </div>
           <div class="card-body">
-            <h3>CardioAI <small>Coronary risk &amp; 3D heart</small></h3>
+            <h3>CardioAI</h3>
             <p>Predicts coronary artery disease and stenosis in the LAD, LCX and RCA arteries from routine clinical data, then paints each artery's risk onto an interactive 3D heart with SHAP explanations.</p>
             <ul class="features">
-              <li>One tuned model per artery</li><li>No target leakage, enforced by tests</li><li>Live updates as inputs change</li><li>CAD test ROC-AUC 0.840</li>
+              <li>One tuned model per artery</li><li>Tests that guard against target leakage</li><li>ROC-AUC 0.840 on held-out CAD test data</li>
             </ul>
-            <div class="tags"><span>scikit-learn</span><span>XGBoost</span><span>SHAP</span><span>FastAPI</span><span>React Three Fiber</span></div>
+            <div class="tags">scikit-learn · XGBoost · SHAP · FastAPI · React Three Fiber</div>
             <div class="card-actions">
               <a class="btn btn-line" href="https://github.com/iwan-adler/Multimodal-CardioAI" target="_blank" rel="noopener"><svg><use href="#i-gh"/></svg>GitHub</a>
             </div>
@@ -223,7 +196,7 @@
       </div>
 
       <div class="more-head">
-        <h3 class="more-title">More builds <span class="mono" id="proj-count">10 projects</span></h3>
+        <h3 class="more-title">Other projects <span id="proj-count">10 projects</span></h3>
         <div class="filters" role="group" aria-label="Filter projects">
           <button type="button" class="filter on" data-f="all" aria-pressed="true">All</button>
           <button type="button" class="filter" data-f="ai" aria-pressed="false">AI &amp; ML</button>
@@ -234,74 +207,64 @@
       </div>
       <div class="mini-grid" id="mini-grid">
         <a class="mini" data-cat="ai" href="https://github.com/iwan-adler/personal-ai-agent" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">AI &AMP; ML</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>Personal AI Agent</h4>
+          <h4>Personal AI Agent<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>Koda, a command-line assistant where the LLM proposes and Python decides. Every tool call is checked against a schema, allowlist, permissions and risk level, then written to an audit log.</p>
           <span class="mini-hl mono">v1.0 · local web UI with approvals</span>
-          <span class="tags"><span>Python</span><span>FastAPI</span><span>Pydantic</span><span>SQLite</span><span>Ollama</span></span>
+          <span class="tags">Python · FastAPI · Pydantic · SQLite · Ollama</span>
         </a>
         <a class="mini" data-cat="ai" href="https://github.com/iwan-adler/neural-net-from-scratch" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">AI &AMP; ML</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>Neural Net from Scratch</h4>
+          <h4>Neural Net from Scratch<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>A NumPy-only neural network library with dense layers, dropout, Adam and early stopping. Every backward pass is checked against numerical gradients.</p>
           <span class="mini-hl mono">97.39% on digits, on par with scikit-learn</span>
-          <span class="tags"><span>NumPy</span><span>scikit-learn</span><span>Matplotlib</span></span>
+          <span class="tags">NumPy · scikit-learn · Matplotlib</span>
         </a>
         <a class="mini" data-cat="ai" href="https://github.com/iwan-adler/sms-spam-classifier" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">AI &AMP; ML</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>SMS Spam Classifier</h4>
+          <h4>SMS Spam Classifier<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>Spam or ham, built around honest evaluation: leakage-free grouped splits, baselines, cross-validation and a precision-first threshold, served by an API that explains each decision.</p>
           <span class="mini-hl mono">F1 0.955 · PR-AUC 0.988 on held-out test</span>
-          <span class="tags"><span>scikit-learn</span><span>TF-IDF</span><span>Linear SVM</span><span>FastAPI</span></span>
+          <span class="tags">scikit-learn · TF-IDF · Linear SVM · FastAPI</span>
         </a>
         <a class="mini" data-cat="sys" href="https://github.com/iwan-adler/mini-redis" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">SYSTEMS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>mini-redis</h4>
+          <h4>mini-redis<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>A Redis-compatible key-value server in pure Python asyncio. It speaks RESP2 and RESP3, so the official redis-py client and redis-cli work with it unchanged.</p>
           <span class="mini-hl mono">Checked against real Redis in CI</span>
-          <span class="tags"><span>Python</span><span>asyncio</span><span>RESP</span><span>AOF persistence</span></span>
+          <span class="tags">Python · asyncio · RESP · AOF persistence</span>
         </a>
         <a class="mini" data-cat="sys" href="https://github.com/iwan-adler/http-server-from-scratch" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">SYSTEMS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>minihttp</h4>
+          <h4>minihttp<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>An HTTP/1.1 server built from raw sockets, with WebSockets (RFC 6455) implemented from scratch and a multi-room real-time chat on top.</p>
           <span class="mini-hl mono">No frameworks, standard library only</span>
-          <span class="tags"><span>Python</span><span>sockets</span><span>HTTP/1.1</span><span>WebSockets</span></span>
+          <span class="tags">Python · sockets · HTTP/1.1 · WebSockets</span>
         </a>
         <a class="mini" data-cat="app" href="https://github.com/iwan-adler/ai-study-planner" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">WEB APPS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>AI Study Planner</h4>
+          <h4>AI Study Planner<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>Turns tasks, deadlines and weekly availability into a realistic schedule, and replans when sessions are missed. The scheduler is rule-based; AI explanations are optional.</p>
           <span class="mini-hl mono">Honest about what can't fit</span>
-          <span class="tags"><span>FastAPI</span><span>SQLAlchemy</span><span>SQLite</span><span>JavaScript</span></span>
+          <span class="tags">FastAPI · SQLAlchemy · SQLite · JavaScript</span>
         </a>
         <a class="mini" data-cat="app" href="https://github.com/iwan-adler/campus-lost-and-found" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">WEB APPS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>Campus Lost &amp; Found</h4>
+          <h4>Campus Lost &amp; Found<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>Students report and search lost or found items, and finders verify claims before handing anything over. Contact details are never shown publicly.</p>
           <span class="mini-hl mono">Claim verification built in</span>
-          <span class="tags"><span>FastAPI</span><span>SQLite</span><span>HTML</span><span>CSS</span><span>JavaScript</span></span>
+          <span class="tags">FastAPI · SQLite · HTML · CSS · JavaScript</span>
         </a>
         <a class="mini" data-cat="app" href="https://github.com/iwan-adler/api-health-monitor" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">WEB APPS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>API Health Monitor</h4>
+          <h4>API Health Monitor<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>A self-hosted uptime checker that marks endpoints healthy, unhealthy or unreachable and serves history, uptime and latency through a REST API.</p>
           <span class="mini-hl mono">Concurrent checks · uptime %</span>
-          <span class="tags"><span>FastAPI</span><span>HTTPX</span><span>SQLite</span></span>
+          <span class="tags">FastAPI · HTTPX · SQLite</span>
         </a>
         <a class="mini" data-cat="auto" href="https://github.com/iwan-adler/career-inbox-automation" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">AUTOMATION</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>Career Inbox Automation</h4>
+          <h4>Career Inbox Automation<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>An n8n workflow that sorts career emails in Gmail into internships, events, university and deadlines, pulls out deadlines and drafts replies for review. It never sends anything itself.</p>
           <span class="mini-hl mono">You stay in control</span>
-          <span class="tags"><span>n8n</span><span>Gmail</span><span>JavaScript</span></span>
+          <span class="tags">n8n · Gmail · JavaScript</span>
         </a>
         <a class="mini" data-cat="app" href="https://github.com/iwan-adler/Student_management_system" target="_blank" rel="noopener">
-          <span class="mini-top"><span class="mono mini-cat">WEB APPS</span><svg class="mini-arrow"><use href="#i-arrow"/></svg></span>
-          <h4>Student Management System</h4>
+          <h4>Student Management System<svg class="mini-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></h4>
           <p>My first GitHub project, built as a practical exercise to understand project structure, programming concepts, and how to publish a project on GitHub.</p>
           <span class="mini-hl mono">Where it all started</span>
-          <span class="tags"><span>Python</span><span>Tkinter</span><span>SQLite</span></span>
+          <span class="tags">Python · Tkinter · SQLite</span>
         </a>
       </div>
     </div>
@@ -309,22 +272,21 @@
 
   <section class="block" id="experience" style="padding-top:0">
     <div class="wrap">
-      <span class="eyebrow mono">Experience</span>
-      <h2 class="h2">Experience &amp; <em>leadership</em></h2>
+      <h2 class="h2">Experience</h2>
       <div class="timeline">
         <div class="role">
-          <div class="role-meta"><span class="mono">GOOGLE SOLUTION HUNT 2026</span><div class="org">Team Leader</div><div>Project · SRM Orbit</div></div>
+          <div class="role-meta"><span class="mono">Google Solution Hunt 2026</span><div class="org">Team Leader</div><div>Project · SRM Orbit</div></div>
           <div class="role-box">
-            <h3>Led a three-person team from idea to deployed product</h3>
-            <p>Led a three-member team during Google Solution Hunt 2026, where we designed and developed SRM Orbit, an AI-powered contextual campus assistant. It meant teamwork, problem solving and product development, plus AI integration, full-stack development and deployment.</p>
+            <h3>Team leader, SRM Orbit</h3>
+            <p>Led a team of three that designed, built and deployed SRM Orbit during the hackathon. The work covered AI integration with the Gemini API, full-stack development in Next.js and deployment on Vercel.</p>
             <div class="team"><span>With</span><span class="avatar"><i>AS</i>Aislinn Shaikh</span><span class="avatar"><i>DR</i>Damini Roy</span></div>
           </div>
         </div>
         <div class="role">
-          <div class="role-meta"><span class="mono">E-CELL · SRM UNIVERSITY-AP</span><div class="org">Events &amp; Operations Member</div><div>Entrepreneurship Cell</div></div>
+          <div class="role-meta"><span class="mono">E-Cell, SRM University-AP</span><div class="org">Events &amp; Operations Member</div><div>Entrepreneurship Cell</div></div>
           <div class="role-box">
-            <h3>Making entrepreneurship events happen</h3>
-            <p>Contributing to the planning and execution of entrepreneurship-focused events and activities, supporting event coordination, operations, logistics and on-ground execution.</p>
+            <h3>Events &amp; operations</h3>
+            <p>Help plan and run the Entrepreneurship Cell's events: coordination, logistics and work on the day.</p>
           </div>
         </div>
       </div>
@@ -333,38 +295,33 @@
 
   <section class="block" id="skills" style="padding-top:0">
     <div class="wrap">
-      <span class="eyebrow mono">Skills</span>
-      <h2 class="h2">My <em>toolkit</em></h2>
-      <p class="lede">The languages and tools I actually use, grouped by what I use them for.</p>
+      <h2 class="h2">Skills</h2>
       <div class="skills">
-        <div class="skill"><div class="skill-head"><h3>Programming</h3><span class="mono">01</span></div><ul><li>C++</li></ul></div>
-        <div class="skill"><div class="skill-head"><h3>Web</h3><span class="mono">07</span></div><ul><li>HTML</li><li>CSS</li><li>JavaScript</li><li>TypeScript</li><li>React</li><li>Next.js</li><li>Tailwind CSS</li></ul></div>
-        <div class="skill"><div class="skill-head"><h3>AI</h3><span class="mono">03</span></div><ul><li>Gemini API</li><li>AI integration</li><li>Natural-language interfaces</li></ul></div>
-        <div class="skill"><div class="skill-head"><h3>Tools</h3><span class="mono">04</span></div><ul><li>Git</li><li>GitHub</li><li>VS Code</li><li>Vercel</li></ul></div>
+        <div class="skill"><h3>Programming</h3><p>C++</p></div>
+        <div class="skill"><h3>Web</h3><p>HTML, CSS, JavaScript, TypeScript, React, Next.js, Tailwind CSS</p></div>
+        <div class="skill"><h3>AI</h3><p>Gemini API, AI integration, Natural-language interfaces</p></div>
+        <div class="skill"><h3>Tools</h3><p>Git, GitHub, VS Code, Vercel</p></div>
       </div>
     </div>
   </section>
 
   <section class="block" id="achievements" style="padding-top:0">
     <div class="wrap">
-      <span class="eyebrow mono">Achievements</span>
-      <h2 class="h2">Beyond <em>code</em></h2>
-      <div class="beyond">
-        <div class="feat"><span class="glyph"><svg><use href="#i-rocket"/></svg></span><h3>Google Solution Hunt 2026</h3><p>Team Leader for SRM Orbit.</p><span class="mono">HACKATHON</span></div>
-        <div class="feat"><span class="glyph"><svg><use href="#i-users"/></svg></span><h3>E-Cell</h3><p>Events &amp; Operations Member, SRM University-AP.</p><span class="mono">UNIVERSITY</span></div>
-        <div class="feat"><span class="glyph"><svg><use href="#i-shield"/></svg></span><h3>NCC A Certificate</h3><p>National Cadet Corps.</p><span class="mono">NCC</span></div>
-        <div class="feat"><span class="glyph"><svg><use href="#i-award"/></svg></span><h3>Certifications</h3><p>Spell Bee and sports certifications, alongside NCC.</p><span class="mono">CERTIFICATES</span></div>
-      </div>
-    </div>
+      <h2 class="h2">Activities &amp; certificates</h2>
+      <ul class="beyond">
+        <li><b>Google Solution Hunt 2026</b><span>Team leader, SRM Orbit</span></li>
+        <li><b>E-Cell, SRM University-AP</b><span>Events &amp; operations member</span></li>
+        <li><b>NCC A Certificate</b><span>National Cadet Corps</span></li>
+        <li><b>Spell Bee and sports</b><span>Certificates</span></li>
+      </ul>
+        </div>
   </section>
 </main>
 
 <section class="contact" id="contact">
-  <div class="stars" aria-hidden="true"></div>
   <div class="wrap contact-in">
-    <span class="eyebrow mono">Contact</span>
-    <h2 class="big">Let's build <em>something.</em></h2>
-    <p class="lede">I'm always interested in learning, building, collaborating, and exploring new ideas.</p>
+    <h2 class="h2">Contact</h2>
+    <p class="lede">Email is the best way to reach me, whether it's about an internship, a hackathon team or one of my projects.</p>
     <div class="mail-row">
       <span class="mail" id="email">rosiwa648@gmail.com</span>
       <button class="btn btn-ghost" id="copy-btn" type="button"><svg><use href="#i-copy"/></svg>Copy email</button>
@@ -376,7 +333,7 @@
       <a class="btn btn-ghost" href="https://github.com/iwan-adler" target="_blank" rel="noopener"><svg><use href="#i-gh"/></svg>GitHub</a>
     </div>
     <footer>
-      <span>© 2026 Iwalani Rosita · Built with curiosity.</span>
+      <span>© 2026 Iwalani Rosita</span>
       <div class="socials">
         <a class="icon-link" href="https://github.com/iwan-adler" target="_blank" rel="noopener" aria-label="GitHub"><svg><use href="#i-gh"/></svg></a>
         <a class="icon-link" href="https://www.linkedin.com/in/iwalani-rosita-244806406" target="_blank" rel="noopener" aria-label="LinkedIn"><svg><use href="#i-in"/></svg></a>
@@ -392,7 +349,7 @@
 <aside class="chat" id="chat" role="dialog" aria-label="Chat with Iwalani's AI twin" hidden>
   <header class="chat-head">
     <img src="/twin-face.webp" alt="" width="88" height="88">
-    <div><b>Iwalani's AI twin</b><span class="mono"><i class="dot"></i>online · answers from my portfolio</span></div>
+    <div><b>Iwalani's AI twin</b><span class="mono">Answers from this portfolio</span></div>
     <button type="button" id="chat-close" aria-label="Close chat"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg></button>
   </header>
   <div class="chat-log" id="chat-log" aria-live="polite"></div>
