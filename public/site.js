@@ -16,17 +16,12 @@
   menuBtn.addEventListener('click', () => { const o = links.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', o); });
   links.addEventListener('click', e => { if (e.target.tagName === 'A') { links.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); } });
 
-  /* ---------- clock ---------- */
-  const clock = $('#clock');
-  const tick = () => { try { clock.textContent = new Intl.DateTimeFormat('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Kolkata'}).format(new Date()) + ' IST'; } catch(e){} };
-  tick(); setInterval(tick, 20000);
-
   /* ---------- copy email ---------- */
   const EMAIL = 'rosiwa648@gmail.com';
   const copyState = $('#copy-state'), emailEl = $('#email');
   $('#copy-btn').addEventListener('click', () => {
     const select = () => { const r = document.createRange(); r.selectNodeContents(emailEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copyState.textContent = 'Selected'; };
-    try { navigator.clipboard.writeText(EMAIL).then(() => copyState.textContent = 'Copied ✓', select); } catch(e) { select(); }
+    try { navigator.clipboard.writeText(EMAIL).then(() => copyState.textContent = 'Copied', select); } catch(e) { select(); }
     setTimeout(() => copyState.textContent = '', 2400);
   });
 
@@ -35,85 +30,19 @@
   const onScroll = () => { const h = root.scrollHeight - innerHeight; prog.style.setProperty('--p', h > 0 ? Math.min(1, scrollY / h) : 0); };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-  /* ---------- reveal on scroll (visible at rest) ---------- */
-  if (!reduce && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
-    $$('.h2, .about-text, .edu, .card, .role, .skill, .feat, .big, .mini').forEach(el => {
-      el.classList.add('reveal'); el.style.animationDelay = ([...el.parentNode.children].indexOf(el) % 4) * 90 + 'ms'; io.observe(el);
-    });
-  }
-
   /* ---------- hero name: letters respond to the pointer ---------- */
   const hero = $('#home'), first = $('#first');
-  first.innerHTML = [...first.textContent].map(c => '<span class="ch">' + c + '</span>').join('');
-  const chars = $$('#first .ch');
   let hp = { x: 0, y: 0, inside: false, nx: 0, ny: 0 };
   hero.addEventListener('pointermove', e => {
     const b = hero.getBoundingClientRect();
     hp = { x: e.clientX - b.left, y: e.clientY - b.top, inside: true, nx: (e.clientX - b.left) / b.width - .5, ny: (e.clientY - b.top) / b.height - .5 };
-    if (reduce) return;
-    chars.forEach(ch => {
-      const r = ch.getBoundingClientRect();
-      const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
-      const k = Math.max(0, 1 - d / 240);
-      ch.style.setProperty('--w', Math.round(700 - k * 420));
-      ch.style.setProperty('--y', (-k * 14).toFixed(1) + 'px');
-    });
   });
-  hero.addEventListener('pointerleave', () => { hp.inside = false; chars.forEach(ch => { ch.style.setProperty('--w', 700); ch.style.setProperty('--y', '0px'); }); });
+  hero.addEventListener('pointerleave', () => { hp.inside = false; });
 
-  /* ---------- typing roles ---------- */
-  const typed = $('#typed');
-  const roles = ['CSE (AI & ML) Student', 'Developer', 'Builder', 'Hackathon team leader', 'Always learning'];
-  if (!reduce) {
-    let ri = 0, ci = roles[0].length, del = true, wait = 2200;
-    const step = () => {
-      const word = roles[ri];
-      if (wait > 0) { const w = wait; wait = 0; return setTimeout(step, w); }
-      if (del) { ci--; typed.textContent = word.slice(0, ci); if (ci <= 0) { del = false; ri = (ri + 1) % roles.length; wait = 250; } setTimeout(step, 35); }
-      else { const nw = roles[ri]; ci++; typed.textContent = nw.slice(0, ci); if (ci >= nw.length) { del = true; wait = 2200; } setTimeout(step, 65 + Math.random() * 50); }
-    };
-    step();
-  }
+  const setCur = () => {};
 
-  /* ---------- custom cursor ---------- */
-  const ring = $('#cur-ring'), dot = $('#cur-dot'), curLabel = $('#cur-label');
-  let cx = -100, cy = -100, rx = -100, ry = -100, forced = null;
-  const setCur = (mode, text) => { forced = mode; ring.classList.toggle('label', mode === 'label'); ring.classList.toggle('hot', mode === 'hot'); if (text) curLabel.textContent = text; };
-  if (fine && !reduce) {
-    root.classList.add('has-cursor');
-    addEventListener('pointermove', e => { cx = e.clientX; cy = e.clientY; dot.style.transform = 'translate(' + cx + 'px,' + cy + 'px)'; }, { passive: true });
-    (function follow(){ rx += (cx - rx) * .2; ry += (cy - ry) * .2; ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)'; requestAnimationFrame(follow); })();
-    document.addEventListener('pointerover', e => {
-      if (e.target.closest('#orbit-wrap')) return;
-      if (e.target.closest('#twin-btn, #twin-fab')) return setCur('label', 'chat');
-      const hot = e.target.closest('a, button, .skill li, .chip, .tags span, .avatar');
-      setCur(hot ? 'hot' : null);
-    });
-    document.addEventListener('pointerleave', () => { ring.style.opacity = dot.style.opacity = 0; });
-    document.addEventListener('pointerenter', () => { ring.style.opacity = dot.style.opacity = 1; });
-  }
-
-  /* ---------- magnetic buttons ---------- */
-  if (fine && !reduce) $$('.btn, .icon-link, .tool-btn').forEach(el => {
-    el.classList.add('mag');
-    el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(); el.style.setProperty('--mx2', ((e.clientX - r.left - r.width / 2) * .28).toFixed(1) + 'px'); el.style.setProperty('--my2', ((e.clientY - r.top - r.height / 2) * .38).toFixed(1) + 'px'); });
-    el.addEventListener('pointerleave', () => { el.style.setProperty('--mx2', '0px'); el.style.setProperty('--my2', '0px'); });
-  });
-
-  /* ---------- project cards: spotlight + 3D tilt ---------- */
-  $$('.card').forEach(c => {
-    c.addEventListener('pointermove', e => {
-      const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-      c.style.setProperty('--mx', x + 'px'); c.style.setProperty('--my', y + 'px');
-      if (fine && !reduce) { c.style.setProperty('--ry', ((x / r.width - .5) * 7).toFixed(2) + 'deg'); c.style.setProperty('--rx', ((.5 - y / r.height) * 7).toFixed(2) + 'deg'); }
-    });
-    c.addEventListener('pointerleave', () => { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); });
-  });
-
-  /* ---------- project filters + mini-card spotlight ---------- */
+  /* ---------- project filters ---------- */
   const minis = $$('.mini'), count = $('#proj-count');
-  minis.forEach(m => m.addEventListener('pointermove', e => { const r = m.getBoundingClientRect(); m.style.setProperty('--mx', (e.clientX - r.left) + 'px'); m.style.setProperty('--my', (e.clientY - r.top) + 'px'); }));
   $$('.filter').forEach(f => f.addEventListener('click', () => {
     $$('.filter').forEach(x => { x.classList.toggle('on', x === f); x.setAttribute('aria-pressed', x === f); });
     let n = 0;
@@ -145,10 +74,6 @@
       const a = .2 + .6 * s.z * (.6 + .4 * Math.sin(t * 1.6 + s.tw));
       sc.fillStyle = 'rgba(207,224,255,' + a.toFixed(3) + ')';
       sc.beginPath(); sc.arc(x, y, s.z * 1.25, 0, 6.283); sc.fill();
-      if (hp.inside && !reduce) {
-        const d = Math.hypot(x - hp.x, y - hp.y);
-        if (d < 130) { sc.strokeStyle = 'rgba(121,184,255,' + ((1 - d / 130) * .45).toFixed(3) + ')'; sc.lineWidth = .7; sc.beginPath(); sc.moveTo(x, y); sc.lineTo(hp.x, hp.y); sc.stroke(); }
-      }
     }
     if (!reduce && Math.random() < .003 && shoots.length < 2) shootFrom(SW * (.3 + Math.random() * .7), SH * Math.random() * .4);
     shoots = shoots.filter(s => {
@@ -330,7 +255,7 @@
     clear: () => { out.textContent = ''; },
     exit: () => closeTerm(),
     ls: () => line(sections.join('   '), 'c'),
-    hello: () => line('Hi! 👋 Type help to look around.'),
+    hello: () => line('Hi! Type help to look around.'),
     twin: () => { line('Calling my AI twin…', 'g'); closeTerm(); setTimeout(() => window.openTwin && window.openTwin(), 150); },
   };
   cmds.hi = cmds.hello; cmds.cd = cmds.goto;
@@ -380,12 +305,7 @@
   /* ---- little life: blinks, waves, expressions, emotes ---- */
   const emotes = $('#twin-emotes');
   const flash = (cls, ms) => { twin.classList.remove(cls); void twin.offsetWidth; twin.classList.add(cls); clearTimeout(flash[cls]); flash[cls] = setTimeout(() => twin.classList.remove(cls), ms); };
-  const emote = ch => {
-    if (reduce || !emotes) return;
-    const e = document.createElement('span'); e.className = 'emote'; e.textContent = ch;
-    e.style.setProperty('--dx', (Math.random() * 30 - 15).toFixed(0) + 'px');
-    emotes.append(e); setTimeout(() => e.remove(), 1900);
-  };
+  const emote = () => {};
   const blink = () => { flash('blink', 200); if (Math.random() < .25) setTimeout(() => flash('blink', 200), 260); };
   const wave = () => flash('wave', 1750);
   const happy = ms => flash('happy', ms || 1400);
@@ -396,18 +316,18 @@
     (function idle() {
       const r = Math.random();
       if (r < .3) wave();
-      else if (r < .55) { happy(1300); emote(['✨', '💙', '💫'][Math.floor(Math.random() * 3)]); }
-      else if (r < .75) { flash('tilt', 2200); emote('🎵'); }
-      else if (r < .9) { flash('tilt', 1800); emote('💭'); }
-      else { talk(900); emote('👋'); wave(); }
+      else if (r < .55) { happy(1300); emote(['', '', ''][Math.floor(Math.random() * 3)]); }
+      else if (r < .75) { flash('tilt', 2200); emote(''); }
+      else if (r < .9) { flash('tilt', 1800); emote(''); }
+      else { talk(900); emote(''); wave(); }
       setTimeout(idle, 7000 + Math.random() * 6000);
     })();
-    btn.addEventListener('pointerenter', () => { happy(1600); emote('💙'); if (!twin.classList.contains('wave')) wave(); });
+    btn.addEventListener('pointerenter', () => { happy(1600); emote(''); if (!twin.classList.contains('wave')) wave(); });
   }
   window.twinFx = { emote, happy, talk, wave };
 
   /* speech bubble cycles through lines */
-  const lines = ["Hey! ✨ I'm Iwalani's AI twin.<br>Click me to chat!", "Ask me about SRM Orbit 🚀", "Curious what I build with? Ask me!", "Psst… I know all her projects 👀"];
+  const lines = ["Hi, I'm Iwalani's AI twin.<br>Ask me anything.", "I can tell you how SRM Orbit was built.", "Ask me which project to look at first."];
   let li = 0;
   if (!reduce) setInterval(() => {
     if (!chat.hidden) return;
@@ -428,37 +348,37 @@
 
   /* local answers, used when the AI service is not reachable */
   const KB = [
-    [/\b(hi|hey|hello|hii+|yo|namaste)\b/, "Hey there! 👋 I'm Iwalani's AI twin. Ask me about her projects, skills, experience or how to reach her."],
-    [/sarvam|hindi|language detect|language module|multilingual/, "In the Startup-Sarvam team project I worked on the language module, starting with English and Hindi. 🗣️ I wrote the language specification and explored language detection, with 12 Python tests passing during development. The speech integrations (Sarvam, Deepgram, Cartesia) were my teammates' work."],
-    [/qiskit|quantum|max-?cut|qaoa/, "At Qiskit Fall Fest I explored the weighted Max-Cut problem with QAOA and learned how algorithms have to adapt to different quantum processors. ⚛️ The final results aren't confirmed yet, so I won't claim any!"],
-    [/sos|mesh|offline|bluetooth|lora|emergency/, "The Offline SOS Mesh is a design I've been working on for sending emergency messages when internet and cell networks are down: phone-to-phone over Bluetooth Low Energy, maybe LoRa relays, and store-carry-forward delivery with priorities and expiry timers. 🆘 It's a proposed design for now."],
-    [/disaster|flood|landslide|storm|geospatial|satellite/, "Disaster and geospatial AI is a concept I'm exploring: combining weather feeds, satellite imagery, sensors and public reports to spot where floods, landslides or storms may get worse before the impact is visible. 🌧️"],
-    [/podcast|presentation|lonel/, "I prepared a podcast-style presentation called \"Are We More Connected Than Ever, Yet More Alone?\", with slides, a script and answers for my professor's questions. 🎙️"],
-    [/logo|monogram|\bir\b|brand/, "That glowing IR in the middle of the orbit is my own monogram! ✨ Electric blue on dark navy, made to be my identity across my portfolio, GitHub and LinkedIn."],
-    [/intern|opportunit|goal|career|future|looking for|open to|aspire/, "I'm aiming for AI application engineering, with full-stack development and a growing interest in ML research. 🚀 I'm open to internships, research opportunities, hackathons and collaborations where I can contribute and learn. Reach me at " + EMAIL + "."],
-    [/srm orbit|orbit|campus os|solution hunt|hackathon|google/, "SRM Orbit is my favourite build! 🚀 It's a Contextual Campus OS we made at Google Solution Hunt 2026, an AI layer that lets students ask about wayfinding, academics, transport, student services, health and emergency support in plain language. I led a three-person team with Aislinn Shaikh and Damini Roy. Built with Next.js, React, TypeScript, Tailwind CSS, the Gemini API and Vercel.\nDemo: https://google-solution-hunt-2026-qm9up1z9e-rosiwa648-6115.vercel.app/\nCode: https://github.com/iwan-adler/google-solution-hunt-2026"],
-    [/cardio|heart|coronary|medical|health ?care|shap|xgboost/, "CardioAI is my learning project on cardiovascular risk: it predicts coronary artery disease risk and stenosis in the LAD, LCX and RCA arteries and shows each artery's risk on an interactive 3D heart, with SHAP explaining why. 🫀 The repo reports a test ROC-AUC of 0.840 using scikit-learn, XGBoost, SHAP, FastAPI and React Three Fiber. It's educational only, not a clinically validated tool.\nhttps://github.com/iwan-adler/Multimodal-CardioAI"],
-    [/agent|koda|assistant|llm|ollama|hermes|prompt injection/, "Koda is my idea for a free, local personal AI assistant for Windows that helps with university work, studying, email drafts and summaries. 🤖 I've explored Ollama and Hermes-family models so it doesn't need paid APIs, and I care a lot about explicit permissions and keeping important actions under the user's control. My personal-ai-agent repo has a command-line version where the LLM proposes and Python decides. Gmail, Classroom and Chrome integrations are still proposals.\nhttps://github.com/iwan-adler/personal-ai-agent"],
-    [/neural|numpy|backprop|from scratch|digits|deep learning/, "My Neural Net from Scratch is a NumPy-only library: dense layers, dropout, Adam, early stopping, with every backward pass checked against numerical gradients. It hits 97.39% on scikit-learn's digits, on par with scikit-learn's own MLP. 🧠\nhttps://github.com/iwan-adler/neural-net-from-scratch"],
-    [/spam|sms|classif|tf-?idf|svm/, "The SMS Spam Classifier is all about honest evaluation: leakage-free grouped splits, baselines, cross-validation and a precision-first threshold. The final linear SVM scores F1 0.955 and PR-AUC 0.988 on held-out data, and a small API explains each prediction. 📩\nhttps://github.com/iwan-adler/sms-spam-classifier"],
-    [/redis|key.?value|database server|resp/, "mini-redis is a Redis-compatible key-value server in pure Python asyncio. It speaks RESP2 and RESP3, so the official redis-py client and redis-cli work unchanged, with expiry, pipelining and append-only-file persistence, checked against real Redis in CI. ⚡\nhttps://github.com/iwan-adler/mini-redis"],
-    [/http|web ?server|socket|websocket|minihttp/, "minihttp is an HTTP/1.1 server I built from raw sockets, no frameworks. It also implements WebSockets from scratch and has a multi-room real-time chat on top. 🌐\nhttps://github.com/iwan-adler/http-server-from-scratch"],
-    [/study planner|planner|schedul|timetable/, "The AI Study Planner turns tasks, deadlines and weekly availability into a realistic schedule and replans when sessions are missed. The scheduler is rule-based, and AI only explains the plan. Built with FastAPI, SQLAlchemy and SQLite. 📚\nhttps://github.com/iwan-adler/ai-study-planner"],
-    [/lost|found|claim/, "Campus Lost & Found lets students report and search lost or found items, and finders verify a claim before handing anything over. Contact details are never public. Built with FastAPI and SQLite. 🔎\nhttps://github.com/iwan-adler/campus-lost-and-found"],
-    [/monitor|uptime|health check|api health/, "API Health Monitor is a self-hosted uptime checker: it marks endpoints healthy, unhealthy or unreachable and serves history, uptime and latency through a REST API. Built with FastAPI, HTTPX and SQLite. 📈\nhttps://github.com/iwan-adler/api-health-monitor"],
-    [/inbox|gmail|n8n|automation|email workflow/, "Career Inbox Automation is an n8n workflow that sorts career emails in Gmail into internships, events, university and deadlines, extracts deadlines, and drafts replies for me to review. It never sends anything on its own. ✉️\nhttps://github.com/iwan-adler/career-inbox-automation"],
+    [/\b(hi|hey|hello|hii+|yo|namaste)\b/, "Hey there! I'm Iwalani's AI twin. Ask me about her projects, skills, experience or how to reach her."],
+    [/sarvam|hindi|language detect|language module|multilingual/, "In the Startup-Sarvam team project I worked on the language module, starting with English and Hindi. I wrote the language specification and explored language detection, with 12 Python tests passing during development. The speech integrations (Sarvam, Deepgram, Cartesia) were my teammates' work."],
+    [/qiskit|quantum|max-?cut|qaoa/, "At Qiskit Fall Fest I explored the weighted Max-Cut problem with QAOA and learned how algorithms have to adapt to different quantum processors. The final results aren't confirmed yet, so I won't claim any!"],
+    [/sos|mesh|offline|bluetooth|lora|emergency/, "The Offline SOS Mesh is a design I've been working on for sending emergency messages when internet and cell networks are down: phone-to-phone over Bluetooth Low Energy, maybe LoRa relays, and store-carry-forward delivery with priorities and expiry timers. It's a proposed design for now."],
+    [/disaster|flood|landslide|storm|geospatial|satellite/, "Disaster and geospatial AI is a concept I'm exploring: combining weather feeds, satellite imagery, sensors and public reports to spot where floods, landslides or storms may get worse before the impact is visible."],
+    [/podcast|presentation|lonel/, "I prepared a podcast-style presentation called \"Are We More Connected Than Ever, Yet More Alone?\", with slides, a script and answers for my professor's questions."],
+    [/logo|monogram|\bir\b|brand/, "That glowing IR in the middle of the orbit is my own monogram! Electric blue on dark navy, made to be my identity across my portfolio, GitHub and LinkedIn."],
+    [/intern|opportunit|goal|career|future|looking for|open to|aspire/, "I'm aiming for AI application engineering, with full-stack development and a growing interest in ML research. I'm open to internships, research opportunities, hackathons and collaborations where I can contribute and learn. Reach me at " + EMAIL + "."],
+    [/srm orbit|orbit|campus os|solution hunt|hackathon|google/, "SRM Orbit is my favourite build! It's a Contextual Campus OS we made at Google Solution Hunt 2026, an AI layer that lets students ask about wayfinding, academics, transport, student services, health and emergency support in plain language. I led a three-person team with Aislinn Shaikh and Damini Roy. Built with Next.js, React, TypeScript, Tailwind CSS, the Gemini API and Vercel.\nDemo: https://google-solution-hunt-2026-qm9up1z9e-rosiwa648-6115.vercel.app/\nCode: https://github.com/iwan-adler/google-solution-hunt-2026"],
+    [/cardio|heart|coronary|medical|health ?care|shap|xgboost/, "CardioAI is my learning project on cardiovascular risk: it predicts coronary artery disease risk and stenosis in the LAD, LCX and RCA arteries and shows each artery's risk on an interactive 3D heart, with SHAP explaining why. The repo reports a test ROC-AUC of 0.840 using scikit-learn, XGBoost, SHAP, FastAPI and React Three Fiber. It's educational only, not a clinically validated tool.\nhttps://github.com/iwan-adler/Multimodal-CardioAI"],
+    [/agent|koda|assistant|llm|ollama|hermes|prompt injection/, "Koda is my idea for a free, local personal AI assistant for Windows that helps with university work, studying, email drafts and summaries. I've explored Ollama and Hermes-family models so it doesn't need paid APIs, and I care a lot about explicit permissions and keeping important actions under the user's control. My personal-ai-agent repo has a command-line version where the LLM proposes and Python decides. Gmail, Classroom and Chrome integrations are still proposals.\nhttps://github.com/iwan-adler/personal-ai-agent"],
+    [/neural|numpy|backprop|from scratch|digits|deep learning/, "My Neural Net from Scratch is a NumPy-only library: dense layers, dropout, Adam, early stopping, with every backward pass checked against numerical gradients. It hits 97.39% on scikit-learn's digits, on par with scikit-learn's own MLP.\nhttps://github.com/iwan-adler/neural-net-from-scratch"],
+    [/spam|sms|classif|tf-?idf|svm/, "The SMS Spam Classifier is all about honest evaluation: leakage-free grouped splits, baselines, cross-validation and a precision-first threshold. The final linear SVM scores F1 0.955 and PR-AUC 0.988 on held-out data, and a small API explains each prediction.\nhttps://github.com/iwan-adler/sms-spam-classifier"],
+    [/redis|key.?value|database server|resp/, "mini-redis is a Redis-compatible key-value server in pure Python asyncio. It speaks RESP2 and RESP3, so the official redis-py client and redis-cli work unchanged, with expiry, pipelining and append-only-file persistence, checked against real Redis in CI.\nhttps://github.com/iwan-adler/mini-redis"],
+    [/http|web ?server|socket|websocket|minihttp/, "minihttp is an HTTP/1.1 server I built from raw sockets, no frameworks. It also implements WebSockets from scratch and has a multi-room real-time chat on top.\nhttps://github.com/iwan-adler/http-server-from-scratch"],
+    [/study planner|planner|schedul|timetable/, "The AI Study Planner turns tasks, deadlines and weekly availability into a realistic schedule and replans when sessions are missed. The scheduler is rule-based, and AI only explains the plan. Built with FastAPI, SQLAlchemy and SQLite.\nhttps://github.com/iwan-adler/ai-study-planner"],
+    [/lost|found|claim/, "Campus Lost & Found lets students report and search lost or found items, and finders verify a claim before handing anything over. Contact details are never public. Built with FastAPI and SQLite.\nhttps://github.com/iwan-adler/campus-lost-and-found"],
+    [/monitor|uptime|health check|api health/, "API Health Monitor is a self-hosted uptime checker: it marks endpoints healthy, unhealthy or unreachable and serves history, uptime and latency through a REST API. Built with FastAPI, HTTPX and SQLite.\nhttps://github.com/iwan-adler/api-health-monitor"],
+    [/inbox|gmail|n8n|automation|email workflow/, "Career Inbox Automation is an n8n workflow that sorts career emails in Gmail into internships, events, university and deadlines, extracts deadlines, and drafts replies for me to review. It never sends anything on its own.️\nhttps://github.com/iwan-adler/career-inbox-automation"],
     [/student management|first project|tkinter|sqlite|python/, "The Student Management System was my very first GitHub project. I built it to learn project structure and how to publish on GitHub. It uses Python, Tkinter and SQLite.\nhttps://github.com/iwan-adler/Student_management_system"],
-    [/project|built|build|work|portfolio|github|repo/, "I've built quite a few things! 🚀\n• AI & ML: SRM Orbit, CardioAI, Personal AI Agent (Koda), Neural Net from Scratch, SMS Spam Classifier\n• Systems: mini-redis, minihttp\n• Web apps: AI Study Planner, Campus Lost & Found, API Health Monitor, Student Management System\n• Automation: Career Inbox Automation\nAsk me about any of them!"],
-    [/skill|stack|tech|programming|know|tools?|react|next|typescript|javascript|python|\bc\b|gemini/, "My toolkit 🛠️\n• Languages: Python, JavaScript, TypeScript, C, HTML and CSS\n• Frontend: React, Next.js, Tailwind CSS, Framer Motion\n• Tools: Git, GitHub, npm, ESLint, Vercel\n• Exploring: generative AI, local models with Ollama, language detection, speech tech, Qiskit\nI'm still building my foundations, so my experience varies from tool to tool."],
+    [/project|built|build|work|portfolio|github|repo/, "I've built quite a few things!\n• AI & ML: SRM Orbit, CardioAI, Personal AI Agent (Koda), Neural Net from Scratch, SMS Spam Classifier\n• Systems: mini-redis, minihttp\n• Web apps: AI Study Planner, Campus Lost & Found, API Health Monitor, Student Management System\n• Automation: Career Inbox Automation\nAsk me about any of them!"],
+    [/skill|stack|tech|programming|know|tools?|react|next|typescript|javascript|python|\bc\b|gemini/, "My toolkit\n• Languages: Python, JavaScript, TypeScript, C, HTML and CSS\n• Frontend: React, Next.js, Tailwind CSS, Framer Motion\n• Tools: Git, GitHub, npm, ESLint, Vercel\n• Exploring: generative AI, local models with Ollama, language detection, speech tech, Qiskit\nI'm still building my foundations, so my experience varies from tool to tool."],
     [/e-?cell|experience|leader|role|lead|council|community|club/, "I'm on the Events & Operations team at E-Cell, SRM University-AP, and I took part in student council activities at school. I was also Team Leader of my three-person team at Google Solution Hunt 2026, where we built SRM Orbit."],
-    [/achieve|award|ncc|certif|spell|sport/, "Beyond code: Team Leader at Google Solution Hunt 2026, E-Cell Events & Operations Member, the NCC A Certificate, plus Spell Bee and sports certifications. ✨"],
-    [/study|college|university|degree|education|srm|m\.?tech|course|year|graduat/, "I'm a first-year Integrated M.Tech student in Computer Science & Engineering, specializing in AI & ML, at SRM University-AP. I'm expected to graduate in 2031. 🎓"],
-    [/contact|email|mail|reach|hire|linkedin|connect|github|collab/, "I'd love to hear from you! 💌\nEmail: " + EMAIL + "\nLinkedIn: https://www.linkedin.com/in/iwalani-rosita-244806406\nGitHub: https://github.com/iwan-adler"],
+    [/achieve|award|ncc|certif|spell|sport/, "Beyond code: Team Leader at Google Solution Hunt 2026, E-Cell Events & Operations Member, the NCC A Certificate, plus Spell Bee and sports certifications."],
+    [/study|college|university|degree|education|srm|m\.?tech|course|year|graduat/, "I'm a first-year Integrated M.Tech student in Computer Science & Engineering, specializing in AI & ML, at SRM University-AP. I'm expected to graduate in 2031."],
+    [/contact|email|mail|reach|hire|linkedin|connect|github|collab/, "I'd love to hear from you!\nEmail: " + EMAIL + "\nLinkedIn: https://www.linkedin.com/in/iwalani-rosita-244806406\nGitHub: https://github.com/iwan-adler"],
     [/who|about|yourself|iwalani|rosita|tell me/, "I'm Iwalani Rosita's AI twin! She's a first-year Integrated M.Tech CSE (AI & ML) student at SRM University-AP, graduating in 2031. She loves building practical AI applications, AI agents and full-stack tools, and she's working toward a career in AI application engineering."],
-    [/interest|hobby|passion|like|love|ai|ml|machine/, "I'm most excited about practical AI: AI agents, generative AI, machine learning and full-stack apps. 💙 I also enjoy systems (HTTP servers, Redis-style storage), language tech for English and Hindi, healthcare and disaster-resilience tech, and a bit of quantum computing."],
+    [/interest|hobby|passion|like|love|ai|ml|machine/, "I'm most excited about practical AI: AI agents, generative AI, machine learning and full-stack apps. I also enjoy systems (HTTP servers, Redis-style storage), language tech for English and Hindi, healthcare and disaster-resilience tech, and a bit of quantum computing."],
     [/real|bot|ai twin|are you/, "I'm an AI twin, not Iwalani herself. I only answer from what's on her portfolio. For anything else, email her at " + EMAIL + "!"],
   ];
-  const localAnswer = q => { const t = q.toLowerCase(); for (const [re, a] of KB) if (re.test(t)) return a; return "Hmm, I'm not sure about that one, and I don't want to make things up! 😅 Try asking about her projects, skills or experience, or email her at " + EMAIL + "."; };
+  const localAnswer = q => { const t = q.toLowerCase(); for (const [re, a] of KB) if (re.test(t)) return a; return "Hmm, I'm not sure about that one, and I don't want to make things up! Try asking about her projects, skills or experience, or email her at " + EMAIL + "."; };
 
   /* rendering */
   const linkify = (el, text) => {
@@ -477,7 +397,7 @@
     q = q.trim(); if (!q || busy) return;
     busy = true; add('me', q); history.push({ role: 'user', text: q });
     const t = typing(); const started = Date.now();
-    emote('💭'); twin.classList.add('tilt');
+    emote(''); twin.classList.add('tilt');
     let answer = null;
     try {
       const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 15000);
@@ -497,7 +417,7 @@
   function openTwin() {
     lastFocus = document.activeElement;
     chat.hidden = false; fab.hidden = true;
-    if (!greeted) { greeted = true; add('bot', "Hey! ✨ I'm Iwalani's AI twin. I know all about her projects, skills and experience. What would you like to know?"); }
+    if (!greeted) { greeted = true; add('bot', "Hey! I'm Iwalani's AI twin. I know all about her projects, skills and experience. What would you like to know?"); }
     setTimeout(() => input.focus({ preventScroll: true }), 60);
   }
   function closeTwin() {
@@ -506,7 +426,7 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
   window.openTwin = openTwin;
-  btn.addEventListener('click', () => { emote('✨'); if (!reduce) { twin.classList.remove('hop'); void twin.offsetWidth; twin.classList.add('hop'); } setTimeout(openTwin, reduce ? 0 : 280); });
+  btn.addEventListener('click', () => { emote(''); if (!reduce) { twin.classList.remove('hop'); void twin.offsetWidth; twin.classList.add('hop'); } setTimeout(openTwin, reduce ? 0 : 280); });
   fab.addEventListener('click', openTwin);
   $('#chat-close').addEventListener('click', closeTwin);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !chat.hidden) closeTwin(); });
